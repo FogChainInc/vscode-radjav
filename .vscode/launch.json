@@ -67,7 +67,8 @@
 				"--extensionDevelopmentPath=${workspaceFolder}"
 			],
 			"sourceMaps": true,
-			"outFiles": [ "${workspaceFolder}/out/**/*.js" ]
+			"outFiles": [ "${workspaceFolder}/out/**/*.js" ],
+			"trace": true
 		},
 		{
 			"name": "Debug gulpfile",

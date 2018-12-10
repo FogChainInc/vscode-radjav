@@ -10,14 +10,14 @@ import { NodeDebugAdapter } from './nodeDebugAdapter';
 
 ChromeDebugSession.run(ChromeDebugSession.getSession(
     {
-        logFilePath: path.join(os.tmpdir(), 'vscode-node-debug2.txt'), // non-.txt file types can't be uploaded to github
+        logFilePath: path.join(os.tmpdir(), 'vscode-radjav-debug2.txt'), // non-.txt file types can't be uploaded to github
         adapter: NodeDebugAdapter,
-        extensionName: 'node-debug2'
+        extensionName: 'radjav-debug2'
     }));
 
 /* tslint:disable:no-var-requires */
 const debugAdapterVersion = require('../../package.json').version;
-logger.log('node-debug2: ' + debugAdapterVersion);
+logger.log('radjav-debug2: ' + debugAdapterVersion);
 
 /* __GDPR__FRAGMENT__
    "DebugCommonProperties" : {

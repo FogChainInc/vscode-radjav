@@ -5,13 +5,13 @@
 import { DebugProtocol } from 'vscode-debugprotocol';
 
 import * as nls from 'vscode-nls';
-import { ErrorWithMessage } from 'vscode-chrome-debug-core';
+import { ErrorWithMessage } from 'vscode-chrome-debug-core/out/src/errors';
 const localize = nls.loadMessageBundle();
 
 export function runtimeNotFound(_runtime: string): DebugProtocol.Message {
     return new ErrorWithMessage({
         id: 2001,
-        format: localize('VSND2001', "Cannot find runtime '{0}' on PATH. Is '{0}' installed?", '{_runtime}'),
+        format: localize('VSND2001', "Cannot find runtime '{0}' on PATH.", '{_runtime}'),
         variables: { _runtime }
     });
 }

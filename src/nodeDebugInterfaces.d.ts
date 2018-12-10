@@ -17,9 +17,6 @@ export interface ICommonRequestArgs extends Core.ICommonRequestArgs {
     cwd?: string;
     /** Request frontend to restart session on termination. */
     restart?: boolean;
-
-    /** Don't set breakpoints in JS files that don't have sourcemaps */
-    disableOptimisticBPs?: boolean;
 }
 
 /**

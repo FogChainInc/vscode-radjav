@@ -1,7 +1,7 @@
 {
-  "name": "node-debug2",
-  "displayName": "Node Debug",
-  "version": "1.30.3",
+  "name": "radjav-debug2",
+  "displayName": "RadJav Debug",
+  "version": "1.29.5",
   "publisher": "ms-vscode",
   "description": "%extension.description%",
   "icon": "images/node-debug-icon.png",
@@ -14,7 +14,7 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "vscode-chrome-debug-core": "^6.7.37",
+    "vscode-chrome-debug-core": "^6.7.31",
     "vscode-debugadapter": "^1.33.0-pre.2",
     "vscode-nls": "^3.2.5"
   },
@@ -43,7 +43,7 @@
   },
   "main": "./out/src/extension",
   "activationEvents": [
-    "onCommand:extension.node-debug2.toggleSkippingFile"
+    "onCommand:extension.radjav-debug2.toggleSkippingFile"
   ],
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
@@ -69,140 +69,34 @@
     "url": "https://github.com/Microsoft/vscode-node-debug2/issues"
   },
   "contributes": {
+    "languages": [
+      {
+        "id": "javascript",
+        "extensions": [
+          ".xrj"
+        ],
+        "aliases": [
+          "RadJav"
+        ]
+      }
+    ],
     "breakpoints": [
       {
         "language": "javascript"
-      },
-      {
-        "language": "javascriptreact"
       }
     ],
     "debuggers": [
       {
-        "type": "extensionHost",
-        "label": "VS Code Extension Development",
-        "program": "./out/src/nodeDebug.js",
-        "runtime": "node",
-        "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
-        "configurationSnippets": [
-          {
-            "label": "%extensionHost.snippet.launch.label%",
-            "description": "%extensionHost.snippet.launch.description%",
-            "body": {
-              "type": "extensionHost",
-              "request": "launch",
-              "name": "%extensionHost.launch.config.name%",
-              "runtimeExecutable": "^\"\\${execPath}\"",
-              "args": [
-                "^\"--extensionDevelopmentPath=\\${workspaceFolder}\""
-              ],
-              "outFiles": [
-                "^\"\\${workspaceFolder}/out/**/*.js\""
-              ],
-              "preLaunchTask": "npm"
-            }
-          }
+        "type": "radjav",
+        "label": "RadJav",
+        "languages": [
+            "javascript",
+            "typescript"
         ],
-        "configurationAttributes": {
-          "launch": {
-            "required": [
-              "runtimeExecutable",
-              "args"
-            ],
-            "properties": {
-              "runtimeExecutable": {
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "markdownDescription": "%extensionHost.launch.runtimeExecutable.description%",
-                "default": "${execPath}"
-              },
-              "args": {
-                "type": "array",
-                "description": "%node.launch.args.description%",
-                "items": {
-                  "type": "string"
-                },
-                "default": [
-                  "--extensionDevelopmentPath=${workspaceFolder}"
-                ]
-              },
-              "env": {
-                "type": "object",
-                "additionalProperties": {
-                  "type": [
-                    "string",
-                    "null"
-                  ]
-                },
-                "markdownDescription": "%extensionHost.launch.env.description%",
-                "default": {}
-              },
-              "stopOnEntry": {
-                "type": "boolean",
-                "description": "%extensionHost.launch.stopOnEntry.description%",
-                "default": true
-              },
-              "sourceMaps": {
-                "type": "boolean",
-                "description": "%node.sourceMaps.description%",
-                "default": true
-              },
-              "outDir": {
-                "type": [
-                  "string",
-                  "null"
-                ],
-                "deprecationMessage": "%outDir.deprecationMessage%",
-                "default": "${workspaceFolder}/out"
-              },
-              "outFiles": {
-                "type": "array",
-                "markdownDescription": "%node.outFiles.description%",
-                "items": {
-                  "type": "string"
-                },
-                "default": [
-                  "${workspaceFolder}/out/**/*.js"
-                ]
-              },
-              "smartStep": {
-                "type": "boolean",
-                "description": "%node.smartStep.description%",
-                "default": true
-              },
-              "skipFiles": {
-                "type": "array",
-                "description": "%node.skipFiles.description%",
-                "items": {
-                  "type": "string"
-                },
-                "default": []
-              },
-              "trace": {
-                "type": [
-                  "boolean",
-                  "string"
-                ],
-                "description": "%node.trace.description%",
-                "default": true
-              },
-              "enableSourceMapCaching": {
-                "type": "boolean",
-                "description": "%node.enableSourceMapCaching.description%",
-                "default": true
-              }
-            }
-          }
-        }
-      },
-      {
-        "type": "node2",
-        "label": "Node.js v6.3+",
         "program": "./out/src/nodeDebug.js",
         "runtime": "node",
-        "aiKey": "AIF-d9b70cd4-b9f9-4d70-929b-a071c400b217",
+        "runtimeArgs": [
+        ],
         "configurationAttributes": {
           "launch": {
             "required": [
@@ -366,11 +260,6 @@
                 "type": "boolean",
                 "description": "%node.enableSourceMapCaching.description%",
                 "default": true
-              },
-              "disableOptimisticBPs": {
-                "type": "boolean",
-                "description": "%node.disableOptimisticBPs.description%",
-                "default": true
               }
             }
           },
@@ -486,11 +375,6 @@
                 "type": "boolean",
                 "description": "%node.enableSourceMapCaching.description%",
                 "default": true
-              },
-              "disableOptimisticBPs": {
-                "type": "boolean",
-                "description": "%node.disableOptimisticBPs.description%",
-                "default": true
               }
             }
           }
@@ -500,24 +384,24 @@
     "menus": {
       "debug/callstack/context": [
         {
-          "command": "extension.node-debug2.toggleSkippingFile",
+          "command": "extension.radjav-debug2.toggleSkippingFile",
           "group": "navigation",
-          "when": "inDebugMode && debugType == 'node2' && callStackItemType == 'stackFrame'"
+          "when": "inDebugMode && debugType == 'radjav' && callStackItemType == 'stackFrame'"
         }
       ]
     },
     "commands": [
       {
-        "command": "extension.node-debug2.toggleSkippingFile",
+        "command": "extension.radjav-debug2.toggleSkippingFile",
         "title": "%toggle.skipping.this.file%"
       }
     ],
     "keybindings": [
       {
-        "command": "extension.node-debug.pickLoadedScript",
+        "command": "extension.radjav-debug.pickLoadedScript",
         "key": "ctrl+f4",
         "mac": "cmd+f4",
-        "when": "debugType == 'node2'"
+        "when": "debugType == 'radjav'"
       }
     ]
   }

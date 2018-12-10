@@ -6,9 +6,9 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as cp from 'child_process';
 
-const NODE_SHEBANG_MATCHER = new RegExp('#! */usr/bin/env +node');
+const NODE_SHEBANG_MATCHER = new RegExp('#! */usr/bin/env +RadJavVM');
 
-const JS_EXTENSIONS = ['.js', '.es6', '.jsx', '.mjs'];
+const JS_EXTENSIONS = ['.xrj', '.js', '.es6', '.jsx', '.mjs'];
 
 export function isJavaScript(aPath: string): boolean {
     const ext = path.extname(aPath).toLowerCase();
@@ -93,7 +93,7 @@ export function compareSemver(a: string, b: string): number {
 function versionStringToNumber(str: string): number {
     const match = str.match(semverRegex);
     if (!match) {
-        throw new Error('Invalid node version string: ' + str);
+        throw new Error('Invalid RadJav version string: ' + str);
     }
 
     return parseInt(match[1], 10) * 10000 + parseInt(match[2], 10) * 100 + parseInt(match[3], 10);

@@ -21,6 +21,7 @@ import * as wsl from './wslSupport';
 
 import * as nls from 'vscode-nls';
 import { FinishedStartingUpEventArguments } from 'vscode-chrome-debug-core/lib/src/executionTimingsReporter';
+import { version } from 'punycode';
 let localize = nls.loadMessageBundle();
 
 const DefaultSourceMapPathOverrides: ISourceMapPathOverrides = {
@@ -31,10 +32,10 @@ const DefaultSourceMapPathOverrides: ISourceMapPathOverrides = {
 };
 
 export class NodeDebugAdapter extends ChromeDebugAdapter {
-    private static NODE = 'node';
+    private static NODE = 'RadJavVM';
     private static RUNINTERMINAL_TIMEOUT = 5000;
     private static NODE_TERMINATION_POLL_INTERVAL = 3000;
-    private static DEBUG_BRK_DEP_MSG = /\(node:\d+\) \[DEP0062\] DeprecationWarning: `node --inspect --debug-brk` is deprecated\. Please use `node --inspect-brk` instead\.\s*/;
+    private static DEBUG_BRK_DEP_MSG = /\(node:\d+\) \[DEP0062\] DeprecationWarning: `radjavvm --inspect --debug-brk` is deprecated\. Please use `radjavvm --inspect` instead\.\s*/;
 
     public static NODE_INTERNALS = '<node_internals>';
 
@@ -98,7 +99,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
             return this.doAttach(args.__restart.port, undefined, args.address, args.timeout);
         }
 
-        const port = args.port || utils.random(3000, 50000);
+        const port = args.port || 9229;
 
         if (args.useWSL && !wsl.subsystemForLinuxPresent()) {
             return Promise.reject(new ErrorWithMessage(<DebugProtocol.Message>{
@@ -151,6 +152,8 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
             if (!fs.existsSync(programPath)) {
                 if (fs.existsSync(programPath + '.js')) {
                     programPath += '.js';
+                } else if (fs.existsSync(programPath + '.xrj')) {
+                    programPath += '.xrj';
                 } else {
                     return this.getNotExistErrorResponse('program', programPath);
                 }
@@ -198,10 +201,9 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
         if (!args.noDebug && !args.port) {
             // Always stop on entry to set breakpoints
             if (debugArgs === DebugArgs.Inspect_DebugBrk) {
-                launchArgs.push(`--inspect=${port}`);
-                launchArgs.push('--debug-brk');
+                launchArgs.push(`--inspect`);
             } else {
-                launchArgs.push(`--inspect-brk=${port}`);
+                launchArgs.push(`--inspect`);
             }
         }
 
@@ -220,7 +222,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
         if ((args.console === 'integratedTerminal' || args.console === 'externalTerminal') && this._supportsRunInTerminalRequest) {
             const termArgs: DebugProtocol.RunInTerminalRequestArguments = {
                 kind: args.console === 'integratedTerminal' ? 'integrated' : 'external',
-                title: localize('node.console.title', 'Node Debug Console'),
+                title: localize('node.console.title', 'RadJav Debug Console'),
                 cwd,
                 args: wslLaunchArgs.combined,
                 env: envArgs
@@ -235,6 +237,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
             throw errors.unknownConsoleType(args.console);
         }
 
+        this._session.sendEvent(new OutputEvent(`port: ${port}\n`, 'stdout'));
         if (!args.noDebug) {
             await this.doAttach(port, undefined, args.address, args.timeout, undefined, args.extraCRDPChannelPort);
         }
@@ -283,7 +286,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
         } catch (err) {
             if (err.format && err.format.indexOf('Cannot connect to runtime process') >= 0) {
                 // hack -core error msg
-                err.format = 'Ensure Node was launched with --inspect. ' + err.format;
+                err.format = 'Ensure RadJav was launched with --inspect. ' + err.format;
             }
 
             throw err;
@@ -293,8 +296,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
     protected commonArgs(args: ICommonRequestArgs): void {
         args.sourceMapPathOverrides = getSourceMapPathOverrides(args.cwd, args.sourceMapPathOverrides);
         fixNodeInternalsSkipFiles(args);
-
-        args.smartStep = typeof args.smartStep === 'undefined' ? !this._isVSClient : args.smartStep;
+        args.showAsyncStacks = typeof args.showAsyncStacks === 'undefined' || args.showAsyncStacks;
 
         this._restartMode = args.restart;
         super.commonArgs(args);
@@ -374,7 +376,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
             this._nodeProcessId = nodeProcess.pid;
             nodeProcess.on('error', (error) => {
                 reject(errors.cannotLaunchDebugTarget(errors.toString()));
-                const msg = `Node process error: ${error}`;
+                const msg = `RadJav process error: ${error}`;
                 logger.error(msg);
                 this.terminateSession(msg);
             });
@@ -434,7 +436,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
                     msg = msg.replace(NodeDebugAdapter.DEBUG_BRK_DEP_MSG, '');
                 }
 
-                const helpMsg = /For help see https:\/\/nodejs.org\/en\/docs\/inspector\s*/;
+                const helpMsg = /For help see https:\/\/radjav.com\/en\/docs\/inspector\s*/;
                 msg = msg.replace(helpMsg, '');
             }
 
@@ -507,12 +509,15 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
         // This message means that all breakpoints have been set by the client. We should be paused at this point.
         // So tell the target to continue, or tell the client that we paused, as needed
         this._finishedConfig = true;
-        if (this._continueAfterConfigDone) {
+
+        /// @fixme For some reason this isn't working. Possibly an issue with RadJav's inspector?
+        /*if (this._continueAfterConfigDone) {
             this._expectingStopReason = undefined;
-            await this.continue(/*internal=*/true);
-        } else if (this._entryPauseEvent) {
+            await this.continue(true);// internal=
+        } else if (this._entryPauseEvent) {*/
+            this._expectingStopReason = undefined;
             await this.onPaused(this._entryPauseEvent);
-        }
+        //}
 
         this.events.emit(ChromeDebugSession.FinishedStartingUpEventName, { requestedContentWasDetected: true } as FinishedStartingUpEventArguments);
         await super.configurationDone();
@@ -665,7 +670,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
     }
 
     protected threadName(): string {
-        return `Node (${this._nodeProcessId})`;
+        return `RadJav (${this._nodeProcessId})`;
     }
 
     /**
@@ -706,7 +711,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
 
     protected validateBreakpointsPath(args: ISetBreakpointsArgs): Promise<void> {
         return super.validateBreakpointsPath(args).catch(e => {
-            if (!this._launchAttachArgs.disableOptimisticBPs && args.source.path && utils.isJavaScript(args.source.path)) {
+            if (args.source.path && utils.isJavaScript(args.source.path)) {
                 return undefined;
             } else {
                 return Promise.reject(e);
@@ -849,7 +854,7 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
 
     protected getReadonlyOrigin(aPath: string): string {
         return path.isAbsolute(aPath) || aPath.startsWith(ChromeDebugAdapter.EVAL_NAME_PREFIX) ?
-            localize('origin.from.node', 'read-only content from Node.js') :
+            localize('origin.from.node', 'read-only content from RadJav') :
             localize('origin.core.module', 'read-only core module');
     }
 
