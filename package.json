@@ -16,6 +16,7 @@
   "dependencies": {
     "vscode-chrome-debug-core": "^6.7.31",
     "vscode-debugadapter": "^1.33.0-pre.2",
+    "vscode-languageclient": "^5.2.1",
     "vscode-nls": "^3.2.5"
   },
   "devDependencies": {
@@ -34,8 +35,8 @@
     "run-sequence": "^1.2.2",
     "tslint": "^5.7.0",
     "typescript": "^2.6.2",
-    "vsce": "^1.47.0",
-    "vscode": "^1.1.21",
+    "vsce": "^1.59.0",
+    "vscode": "^1.1.33",
     "vscode-chrome-debug-core-testsupport": "^4.0.0",
     "vscode-debugadapter-testsupport": "^1.25.0",
     "vscode-debugprotocol": "^1.32.0-pre.0",
@@ -43,7 +44,12 @@
   },
   "main": "./out/src/extension",
   "activationEvents": [
-    "onCommand:extension.radjav-debug2.toggleSkippingFile"
+    "onLanguage:javascript",
+    "onCommand:extension.radjav-debug2.toggleSkippingFile",
+    "onCommand:extension.radjav-debug2.convertToGUIJSON",
+		"onWebviewPanel:extension.radjav-debug2.preview",
+		"onCommand:extension.radjav-debug2.showPreview",
+		"onCommand:extension.radjav-debug2.showPreviewToSide"
   ],
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
@@ -90,13 +96,12 @@
         "type": "radjav",
         "label": "RadJav",
         "languages": [
-            "javascript",
-            "typescript"
+          "javascript",
+          "typescript"
         ],
         "program": "./out/src/nodeDebug.js",
         "runtime": "node",
-        "runtimeArgs": [
-        ],
+        "runtimeArgs": [],
         "configurationAttributes": {
           "launch": {
             "required": [
@@ -382,6 +387,12 @@
       }
     ],
     "menus": {
+      "editor/title": [{
+        "command": "extension.radjav-debug2.showPreviewToSide",
+        "when": "resourceExtname == .xrj",
+        "alt": "extension.radjav-debug2.showPreview",
+        "group": "navigation"
+      }],
       "debug/callstack/context": [
         {
           "command": "extension.radjav-debug2.toggleSkippingFile",
@@ -394,7 +405,29 @@
       {
         "command": "extension.radjav-debug2.toggleSkippingFile",
         "title": "%toggle.skipping.this.file%"
-      }
+      },
+      {
+        "command": "extension.radjav-debug2.convertToGUIJSON",
+        "title": "%convertToGUIJSON%"
+      },
+			{
+				"command": "extension.radjav-debug2.showPreview",
+				"title": "RadJav App Preview",
+				"category": "RadJav",
+				"icon": {
+					"light": "./media/Preview.svg",
+					"dark": "./media/Preview_inverse.svg"
+				}
+			},
+			{
+				"command": "extension.radjav-debug2.showPreviewToSide",
+				"title": "RadJav App Preview",
+				"category": "RadJav",
+				"icon": {
+					"light": "./media/PreviewOnRightPane_16x.svg",
+					"dark": "./media/PreviewOnRightPane_16x_dark.svg"
+				}
+			}
     ],
     "keybindings": [
       {
@@ -404,5 +437,6 @@
         "when": "debugType == 'radjav'"
       }
     ]
-  }
+  },
+  "typings": "d.ts/RaddJav.d.ts"
 }

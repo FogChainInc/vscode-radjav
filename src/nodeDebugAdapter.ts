@@ -21,7 +21,7 @@ import * as wsl from './wslSupport';
 
 import * as nls from 'vscode-nls';
 import { FinishedStartingUpEventArguments } from 'vscode-chrome-debug-core/lib/src/executionTimingsReporter';
-import { version } from 'punycode';
+
 let localize = nls.loadMessageBundle();
 
 const DefaultSourceMapPathOverrides: ISourceMapPathOverrides = {
@@ -511,13 +511,13 @@ export class NodeDebugAdapter extends ChromeDebugAdapter {
         this._finishedConfig = true;
 
         /// @fixme For some reason this isn't working. Possibly an issue with RadJav's inspector?
-        /*if (this._continueAfterConfigDone) {
+        if (this._continueAfterConfigDone) {
             this._expectingStopReason = undefined;
             await this.continue(true);// internal=
-        } else if (this._entryPauseEvent) {*/
+        } else if (this._entryPauseEvent) {
             this._expectingStopReason = undefined;
             await this.onPaused(this._entryPauseEvent);
-        //}
+        }
 
         this.events.emit(ChromeDebugSession.FinishedStartingUpEventName, { requestedContentWasDetected: true } as FinishedStartingUpEventArguments);
         await super.configurationDone();

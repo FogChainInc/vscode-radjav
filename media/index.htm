@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>RadJav App Preview</title>
+
+	<base href = "%baseUrl%" />
+
+	<link href = "./dependencies/dojo/dijit/themes/claro/claro.css" rel = "stylesheet" type = "text/css" />
+	<link href = "./dependencies/dojo/dojox/grid/resources/Grid.css" rel = "stylesheet" type = "text/css" />
+	<link href = "./dependencies/dojo/dojox/grid/resources/claroGrid.css" rel = "stylesheet" type = "text/css" />
+	<link href = "./dependencies/dojo/dojox/calendar/themes/claro/Calendar.css" rel = "stylesheet" type = "text/css" />
+	<link href = "./dependencies/dojo/dojox/calendar/themes/claro/MonthColumnView.css" rel = "stylesheet" type = "text/css" />
+	<link href = "./dependencies/dojo/dojox/layout/resources/FloatingPane.css" rel = "stylesheet" type = "text/css" />
+	<link href = "./dependencies/dojo/dojox/layout/resources/ResizeHandle.css" rel = "stylesheet" type = "text/css" />
+
+	<script type = "text/javascript">
+		var dojoConfig = {
+				async: true,
+				deps: ["dojo/ready", "dojo/parser", "dojo/dnd/move", "dojox/layout/FloatingPane",
+						"dijit/form/Button", "dijit/form/TextBox", "dijit/form/CheckBox",
+						"dojox/grid/DataGrid", "dojo/data/ItemFileWriteStore",
+						"dojo/store/Memory", "dojo/store/Observable", "dijit/form/ComboBox",
+						"dijit/MenuBar", "dijit/PopupMenuBarItem", "dijit/Menu", "dijit/MenuItem",
+						"dijit/MenuSeparator", "dijit/DropDownMenu", "dojo/query"]
+			};
+	</script>
+	<script type = "text/javascript" src = "./dependencies/three.js/three.min.js"></script> <!-- Three.js has to be loaded first -->
+	<script type = "text/javascript" src = "./dependencies/dojo/dojo/dojo.js"></script>
+	<script type = "text/javascript" src = "./RadJav/RadJav.js"></script>
+
+	<script type = "text/javascript" src = "./RadJav/languages/en_us.js"></script>
+	<script type = "text/javascript" src = "./RadJav/themes/default/theme.js"></script>
+
+	<script type = "text/javascript">
+		RadJav.baseUrl = "./RadJav";
+		RadJav.themeUrl = "./RadJav/themes/default";
+		RadJav.isThemeLoaded = true;
+		RadJav.useAjax = false;
+		const vscode = acquireVsCodeApi();
+		var RadJavApp = null;
+
+		alert = function (message)
+			{
+				vscode.postMessage ({ alert: message });
+			};
+
+		window.addEventListener ("message", function (event)
+			{
+				let data = event.data;
+
+				if (data.content != null)
+					eval ("RadJavApp = function (){" + data.content + "};RadJavApp ();");
+			});
+
+		function resetBody ()
+		{
+			var bodyTag = document.getElementsByTagName ("body")[0];
+
+			bodyTag.innerHTML = "<div style = \"position: relative;\">\n</div>";
+		}
+
+		RadJav.OS.onReady (function ()
+			{
+				vscode.postMessage ({ ready: true });
+			});
+	</script>
+</head>
+
+<body class = "claro">
+	<div style = "position: relative;">
+	</div>
+</body>
+
+</html>

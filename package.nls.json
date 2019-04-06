@@ -44,6 +44,7 @@
 
 	"node.processattach.config.name": "Attach to Process",
 	"toggle.skipping.this.file": "Toggle Skipping this File",
+	"convertToGUIJSON": "Convert to GUI JSON",
 
 	"extensionHost.label": "VS Code Extension Development",
 
