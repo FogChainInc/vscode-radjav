@@ -1,0 +1,49 @@
+//
+// Multipart hash in a Promise
+//
+
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+{
+    var text = '1234567890abcdefgh';
+
+    var digest = new RadJav.Crypto.Hash({cryptoLibrary: "OpenSSL",
+					 hashAlgorithm: "sha256",
+					 outputEncoding: "base64"});
+
+    // Print this for the comparison to multipart operation
+    RadJav.Console.println("Digest Result: " + digest.digestSync(text));
+    
+    
+    var digestM = new RadJav.Crypto.HashMultipart({cryptoLibrary: "OpenSSL",
+						   hashAlgorithm: "sha256",
+						   outputEncoding: "base64"});
+
+
+    //
+    // This demonstrates how to do a multipart operation with a Promise.
+    //
+    digestM.update('1234567').then (
+	function ()
+	{
+	    digestM.updateSync('890');
+	    digestM.updateSync('abcdefgh');
+	    var digestResult = digestM.finalize();
+	    RadJav.Console.println("Promise: digest result: " + digestResult);
+	    
+	    alert("Done!\nHash Alg: " + digest.hashAlgorithm + "\nHash: " +
+		  digestResult);
+	});
+
+    // This will show in console before the Promise output.
+    RadJav.Console.println("**** That's all Folks!!!! ****");
+    
+
+}
+
+

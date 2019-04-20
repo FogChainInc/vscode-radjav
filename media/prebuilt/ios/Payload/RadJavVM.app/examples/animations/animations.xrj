@@ -1,0 +1,33 @@
+var animation = new RadJav.Animation ();
+animation.on ("completed", function ()
+	{
+		alert ("Animation complete!");
+	});
+
+// Initialize RadJav and load all necessary libraries.
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary ()).then (function ()
+	{
+		// Execute the application, in this case, a simple function. Can also be a file.
+		RadJav.runApplication (function ()
+			{
+				// Create the window gui object.
+				var win = new RadJav.GUI.Window ("win", "Animations Example");
+
+				win.create ().then (function (win2)
+					{
+						// RadJav.GUI.create is short hand for creating a gui object, this 
+						// is the preferred way to create objects.
+						RadJav.GUI.create ("Button", "button", "Animate!", win2).then (
+											function (button)
+											{
+												animation.attach (button);
+												animation.lerp (button.getPosition (), new RadJav.Vector2 (50, 50), 10);
+
+												button.on ("click", function ()
+													{
+														animation.play ();
+													});
+											});
+					});
+			});
+	});

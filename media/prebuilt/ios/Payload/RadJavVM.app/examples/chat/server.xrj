@@ -1,0 +1,72 @@
+var webSocketServer = null;
+var clients = {};
+var chatHistory = "";
+
+RadJav.startServer = function ()
+	{
+		webSocketServer = new RadJav.Net.WebSocketServer (6351);
+
+		webSocketServer.onAccept (function (accept)
+			{
+				clients[accept] = { id: accept, name: "" };
+			});
+		webSocketServer.onReceive (function (id, data)
+			{
+				var info = JSON.parse (data);
+
+				if (info.type == "changeName")
+				{
+					clients[id].name = info.name;
+					webSocketServer.sendToAll (JSON.stringify ({ type: "updateNames", clients: clients, chatHistory: chatHistory }));
+				}
+
+				if (info.type == "message")
+				{
+					chatHistory += clients[id].name + ": " + info.message + "\n";
+					webSocketServer.sendToAll (JSON.stringify ({ type: "chatHistory", message: chatHistory }));
+				}
+			});
+		webSocketServer.listen ();
+	};
+
+RadJav.stopServer = function ()
+	{
+		webSocketServer.close ();
+		webSocketServer = null;
+		clients = {};
+		chatHistory = "";
+	};
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary ()).then (function ()
+	{
+		RadJav.runApplication (function ()
+			{
+				var win = new RadJav.GUI.Window ("win", "Chat server example");
+
+				win.create ().then (function (win2)
+					{
+						RadJav.GUI.create ({
+												type: "Button", 
+												name: "start", 
+												text: "Start server", 
+												parent: win2
+											}).then (function (button)
+												{
+													button.on ("click", function ()
+														{
+															if (webSocketServer == null)
+															{
+																button.setText ("Stop server");
+																RadJav.startServer ();
+															}
+															else
+															{
+																button.setText ("Start server");
+																RadJav.stopServer ();
+															}
+														});
+												});
+					});
+			});
+	});
+

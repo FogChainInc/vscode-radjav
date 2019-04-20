@@ -1,0 +1,90 @@
+var rootwin;
+
+var scrollview;
+var content;
+var contentbutton1;
+var contentbutton2;
+var image;
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (function () {
+		var screenWidth = RadJav.getPrimaryScreen().getWidth();
+		var screenHeight = RadJav.getPrimaryScreen().getHeight();
+		
+		//create root view
+		rootwin = new RadJav.MUI.View("win", "2DScrollView Example");
+		rootwin.createMainView();
+		rootwin.setPosition(0, 0);
+		rootwin.setSize(screenWidth, screenHeight);
+		
+		//Create 2D scrollview
+		scrollview = new RadJav.MUI.ScrollView("sw", "", rootwin);
+		scrollview.create();
+		scrollview.setPosition(0, 0);
+		scrollview.setSize(screenWidth, screenHeight);
+		
+		RadJav.Console.log("scrollview.create");
+		
+		//Create scrollview content view
+		content = new RadJav.MUI.View("win", "");
+		content.create();
+		content.setPosition(0,0);
+		content.setSize(screenWidth*2, screenHeight*2);
+		
+		RadJav.Console.log("scrollview content view created");
+		
+		contentbutton1 = new RadJav.GUI.Button("button", "touch x", content);
+		contentbutton1.create()
+		contentbutton1.setPosition(50, 100);
+		contentbutton1.setSize(100, 100);
+		contentbutton1.flag = true;
+							
+		contentbutton1.on("click", function () {
+			RadJav.Console.log("radjav touch");
+			if (contentbutton1.flag){
+				contentbutton1.flag = false;
+				contentbutton1.setText("false");
+			}
+			else {
+				contentbutton1.flag = true;
+				contentbutton1.setText("true");
+			}
+			return false;
+		});
+		
+		var contentbutton2 = new RadJav.GUI.Button("button", "touch y", content);
+		contentbutton2.create();
+		contentbutton2.setPosition(50, 300);
+		contentbutton2.setSize(100, 100);
+		contentbutton2.flag = true;
+							
+		contentbutton2.on("click", function () {
+			RadJav.Console.log("radjav touch");
+			if (contentbutton2.flag) {
+				contentbutton2.flag = false;
+				contentbutton2.setText("false sooolonggggnamethatitmustbeinevitablyscrolled");
+			}
+			else {
+				contentbutton2.flag = true;
+				contentbutton2.setText("true sooolonggggnamethatitmustbeinevitablyscrolled");
+			}
+			return false;
+		});	
+		
+/*
+		image = new RadJav.GUI.Image("image", "", content);
+		image.create();
+		image.setPosition(50, 300);
+		image.setSize(900, 900);
+		image.setScaleMode(RadJav.GUI.Image.ScaleModeAspectFit);
+		
+		if (RadJav.OS.type == "android")
+			image.setImage("/storage/emulated/0/Android/data/com.fogchain.radjavvm/cache/examples/mobile/test_image_android.png");
+		else //iOS
+			image.setImage("");
+		
+		RadJav.Console.log("Image scale mode:" + image.getScaleMode());
+*/
+		scrollview.addChild(content);
+	});
+});

@@ -1,0 +1,62 @@
+var animation = new RadJav.Animation ();
+var targetButton = null;
+var globalWindow = null;
+
+// Initialize RadJav and load all necessary libraries.
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary ()).then (function ()
+	{
+		// Execute the application, in this case, a simple function. Can also be a file.
+		RadJav.runApplication (function ()
+			{
+				// Create the window gui object.
+				var win = new RadJav.GUI.Window ("win", "UI Testing Example");
+
+				win.create ().then (function (win2)
+					{
+						globalWindow = win2;
+
+						// RadJav.GUI.create is short hand for creating a gui object, this 
+						// is the preferred way to create objects.
+						RadJav.GUI.create ("Button", "button", "Start Test!", win2).then (
+											function (button)
+											{
+												button.on ("click", function ()
+													{
+														var winPos = globalWindow.getPosition ();
+														winPos.add (button.getPosition ().x + 20, button.getPosition ().y + 50);
+														var start = winPos;
+
+														winPos = globalWindow.getPosition ();
+														winPos.add (targetButton.getPosition ().x + 20, targetButton.getPosition ().y + 50);
+														var end = winPos;
+
+														animation.lerp (start, end, 2);
+														animation.on ("animation", function (obj, pos, timeDelta)
+																{
+																	RadJav.Testing.MouseSimulator.setPosition (pos);
+																});
+														animation.on ("complete", function ()
+																{
+																	RadJav.Testing.MouseSimulator.click (0);
+																});
+														animation.play ();
+													});
+											});
+						RadJav.GUI.create ({
+								type: "Button", 
+								name: "button2", 
+								text: "Target!", 
+								position: "100, 100", 
+								parent: win2
+							}).then (function (button2)
+									{
+										targetButton = button2;
+
+										button2.on ("click", function ()
+											{
+												alert ("Clicked it!");
+											});
+									});
+					});
+			});
+	});

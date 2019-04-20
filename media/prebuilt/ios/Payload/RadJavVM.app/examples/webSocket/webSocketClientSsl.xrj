@@ -1,0 +1,42 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+port = 9229;
+if (RadJav.OS.args.length > 0 && RadJav.OS.args[0] != undefined)
+    port = RadJav.OS.args[0];
+
+var webSocketClient = new RadJav.Net.WebSocketClientSsl({trustStore: "cert/rootca.crt",
+							 verifyMode: "VerifyPeer"});
+
+RadJav.Console.println("Connecting");
+
+alert("About to connect");
+
+webSocketClient.connect("127.0.0.1", port);
+
+RadJav.Console.println("Connected");
+alert("Connected");
+
+webSocketClient.send("WebSocket rocks");
+alert("Sent: WebSocket rocks");
+
+
+webSocketClient.send("WebSocket rocks again, woohoo!!!!!");
+alert("Sent: WebSocket rocks again");
+
+RadJav.Console.println("Now receive");
+
+
+var str = webSocketClient.receive();
+RadJav.Console.println("Received: " + str);
+alert("Received: " + str);
+RadJav.Console.println("Alerted: Received: " + str);
+
+
+webSocketClient.close();
+RadJav.Console.println("Connection closed");
+alert("Closed client");

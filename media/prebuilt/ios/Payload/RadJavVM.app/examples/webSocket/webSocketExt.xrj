@@ -1,0 +1,22 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+var webSocketServer = new RadJav.Net.WebSocketServer();
+
+webSocketServer.onAccept (function (id)
+	{
+	});
+
+webSocketServer.onReceive (function (id, msg)
+	{
+		//echo back
+		webSocketServer.send(id, msg);
+		RadJav.Console.println("Received " + msg);
+	});
+
+webSocketServer.listen("9229");
+alert("Server listening");

@@ -1,0 +1,49 @@
+var rootWin = null;
+var screenSize = new RadJav.Vector2 ();
+
+RadJav.initialize ([
+		RadJav.getStandardLibrary (), 
+		RadJav.getGUILibrary (),
+		RadJav.getMUILibrary ()
+	]).then (function ()
+		{
+			RadJav.runApplication (function (rootGObj)
+				{
+					rootWin = rootGObj;
+
+					screenSize.x = rootWin.getWidth ();
+					screenSize.y = rootWin.getHeight();
+
+					if (RadJav.isMobile () == true)
+					{
+						screenSize.x = RadJav.getPrimaryScreen().getWidth();
+						screenSize.y = RadJav.getPrimaryScreen().getHeight();
+					}
+
+					var gotData = function (data)
+						{
+							var json = JSON.parse (data);
+							RadJav.Console.log ("YAY");
+							RadJav.GUI.createObjects (json, rootWin).then (function (objs)
+									{
+										RadJav.Console.log ("YAY2");
+									});
+						};
+
+					if (RadJav.OS.HTML5 != null)
+						RadJav.Net.httpRequest ("./gui.json").then (gotData);
+					else
+					{
+						var textFile = new RadJav.IO.TextFile ();
+						
+						let path = "./gui.json";
+						if (RadJav.OS.type == "android")
+							path = "/storage/emulated/0/Android/data/com.fogchain.radjavvm/cache/examples/socialMediaApp/gui.json";
+						else if (RadJav.OS.type == "ios")
+							path = RadJav.OS.getApplicationPath() + "/examples/socialMediaApp/gui.json";
+
+						var data = textFile.readFile (path);
+						gotData (data);
+					}
+				}, true);
+		});

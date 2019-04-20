@@ -1,0 +1,206 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android)
+SHA-256-Digest-Manifest: x9SohoDI2LgdzLhJPFzcder2VusesY1rK/xxXZJE6KY=
+X-Android-APK-Signed: 2
+
+Name: AndroidManifest.xml
+SHA-256-Digest: vQYl/PEGyF/qoF5IPRmgt+xoJ0taup1fyDZCYV/tJpU=
+
+Name: assets/examples.zip
+SHA-256-Digest: l3svCw5dJzo5I9z3Eq26cKV7b2mry0LImcfZeXhFUpM=
+
+Name: assets/v8/arm64-v8a/natives_blob.bin
+SHA-256-Digest: RV3TlvLBUlyHat2nvFiLtx5Dm61JagIhZlWQuTWsRC0=
+
+Name: assets/v8/arm64-v8a/snapshot_blob.bin
+SHA-256-Digest: djtfPm3rLTW6xvos5drWSxloxS/i4g5BxqZLzW01deU=
+
+Name: assets/v8/armeabi-v7a/natives_blob.bin
+SHA-256-Digest: Dq4EcLhRHlVVhVhQUKxQaH26kdColtfAkrEfLVuGeaE=
+
+Name: assets/v8/armeabi-v7a/snapshot_blob.bin
+SHA-256-Digest: qWzwzCbH+fd6k9y+BkEgLRlhDOZ4XnMDk7vE5ZXSIW0=
+
+Name: assets/v8/x86/natives_blob.bin
+SHA-256-Digest: DhqAFPOAkMU4CLag/bRuKXEMvwW+7cm3f28LurFzOFk=
+
+Name: assets/v8/x86/snapshot_blob.bin
+SHA-256-Digest: xea5BJXzdF5VDmmtgDQO1jDZX3uJcpZ5egj44oS/Bic=
+
+Name: assets/v8/x86_64/natives_blob.bin
+SHA-256-Digest: kwrCFD8SlGbeq9JEpsfCsGI07GeIGpL/MR55x+ps7UU=
+
+Name: assets/v8/x86_64/snapshot_blob.bin
+SHA-256-Digest: bbZFSOF8xRjbK2d61O1lem2zqmoQN1wEEjtTspGIUOg=
+
+Name: classes.dex
+SHA-256-Digest: Dln1O0dF9X1LUCllwD/kGZ/Q18Q+UiCd6JCo3wwKcsU=
+
+Name: lib/arm64-v8a/libRadJavWrapper.so
+SHA-256-Digest: 1R7TG4+BpTUOVix+ug6Ph7/hT0zIh0PWF24cuH8IVEE=
+
+Name: lib/arm64-v8a/libboost_atomic-mt.so
+SHA-256-Digest: mVH/J0n6HlxU/jeKV6Kr+oDPOXat7VGgGXXhV8RU6/8=
+
+Name: lib/arm64-v8a/libboost_chrono-mt.so
+SHA-256-Digest: RtC3+veBYB8PwY/0zpwZx4WW6hasx3tAM6IQLtPwovs=
+
+Name: lib/arm64-v8a/libboost_container-mt.so
+SHA-256-Digest: zGwcx9+gieqiU3S4BE0p69uXFWDgnkdJP+GTajVGsWU=
+
+Name: lib/arm64-v8a/libboost_context-mt.so
+SHA-256-Digest: /WFtWTm2kGI/f+ydjVGmMZd64ujh1kzIZC9NGO1nMLo=
+
+Name: lib/arm64-v8a/libboost_contract-mt.so
+SHA-256-Digest: lB7LojOTJMCeOZdRcCHWKaVkm/iGa4IE6BbLskinHg8=
+
+Name: lib/arm64-v8a/libboost_coroutine-mt.so
+SHA-256-Digest: DVsxZ4H44Lw7lVawTl8WbiTgzGyBnJD1dY6MoLFr440=
+
+Name: lib/arm64-v8a/libboost_date_time-mt.so
+SHA-256-Digest: 33QzlTFmaZx5j2rH3aEU/sWYBv622WJMbI+OB6gZpDk=
+
+Name: lib/arm64-v8a/libboost_filesystem-mt.so
+SHA-256-Digest: XENF3CvklYDrVBT7Nu1lLL0hMKlTcBI72fjQEJFCJaY=
+
+Name: lib/arm64-v8a/libboost_graph-mt.so
+SHA-256-Digest: z9rElqMC+ncBHW0Mtwe/Gjl3ryocnzM57v6d3XeVzuM=
+
+Name: lib/arm64-v8a/libboost_iostreams-mt.so
+SHA-256-Digest: P2D8urLd/k9ayIck3j8Ws1zLZchwbfqVpGEz0njtAJ0=
+
+Name: lib/arm64-v8a/libboost_log-mt.so
+SHA-256-Digest: YRUWHY7TDOrmfGSdAiiuFNm9lBPsFqgWBH1ipqLoy5A=
+
+Name: lib/arm64-v8a/libboost_log_setup-mt.so
+SHA-256-Digest: 6b8Mx28KWij+25OuebrEd3XBcfslD58XXLzs1k5y80M=
+
+Name: lib/arm64-v8a/libboost_math_c99-mt.so
+SHA-256-Digest: EZa5nmkuBR+bgI6RWSp9CKRThO/vtfEstqMQHc5Y3QQ=
+
+Name: lib/arm64-v8a/libboost_math_c99f-mt.so
+SHA-256-Digest: 3JjIKmOyXJvHe6zvgwbnrI7583HCIt4+rkISPudVfk0=
+
+Name: lib/arm64-v8a/libboost_math_c99l-mt.so
+SHA-256-Digest: DWdMy215SceBEmRihLl+kJeb344BnRJrUOHOnhV6CAY=
+
+Name: lib/arm64-v8a/libboost_math_tr1-mt.so
+SHA-256-Digest: pdgnOvpb2Foc9rlEpijS1YkPHoBZBMH/GC0qKaa5HXI=
+
+Name: lib/arm64-v8a/libboost_math_tr1f-mt.so
+SHA-256-Digest: VVh23h6VCbKGNJQ640JvyAh6proHQF9zFpK6x7SqLD8=
+
+Name: lib/arm64-v8a/libboost_math_tr1l-mt.so
+SHA-256-Digest: n2YJA9XN11hbuJfdBE0fI4qoOJ3yhkC3MRhDB18eylU=
+
+Name: lib/arm64-v8a/libboost_prg_exec_monitor-mt.so
+SHA-256-Digest: Fz/wrhMcNmjt9ObANl8sPpeZ8KBWu0ZxQjepOkX/zZI=
+
+Name: lib/arm64-v8a/libboost_program_options-mt.so
+SHA-256-Digest: 2+ov+7oj6ictOCJ7jV+dbBsLqXl0y9RpRak/L87X9Lg=
+
+Name: lib/arm64-v8a/libboost_random-mt.so
+SHA-256-Digest: IDS/M+KPndtiWVSrWYX6ROiVwYMO6e5aJgGEtZ9mw40=
+
+Name: lib/arm64-v8a/libboost_regex-mt.so
+SHA-256-Digest: j0LVRIUL9oueiKzYWOLn9xgq5qIx0lX0dIv42XDp2RY=
+
+Name: lib/arm64-v8a/libboost_serialization-mt.so
+SHA-256-Digest: 6bOiGZt4syTD5CEGwtdt8krDZ8DqkjiXnDi9mBozzZI=
+
+Name: lib/arm64-v8a/libboost_signals-mt.so
+SHA-256-Digest: IbLzjrcHONQvdgeCZFhW/UZrzgwlGgh0W7UFCiq+KRo=
+
+Name: lib/arm64-v8a/libboost_stacktrace_basic-mt.so
+SHA-256-Digest: 3MyshvyhqjEYspjJS6HNyfFh1f8d87V22PHpTBKiZB4=
+
+Name: lib/arm64-v8a/libboost_stacktrace_noop-mt.so
+SHA-256-Digest: MX9PEovlHlWkB13qhdnFiSm7A7hV3qGZ+7SFXRAeSl8=
+
+Name: lib/arm64-v8a/libboost_system-mt.so
+SHA-256-Digest: 8KV4y3jBHxO+S03l5H8X39aInmMC8ZkpakwnMeyszGU=
+
+Name: lib/arm64-v8a/libboost_thread-mt.so
+SHA-256-Digest: NM7OZC3466YBmZZBB0HQi0OwH8d0URkk8S8ZOSvVPOg=
+
+Name: lib/arm64-v8a/libboost_timer-mt.so
+SHA-256-Digest: iF5565qltD/M10hjw2kPgP74mf44QPfjBaEHO8tIvEw=
+
+Name: lib/arm64-v8a/libboost_type_erasure-mt.so
+SHA-256-Digest: RJ3NPICjeLldnjMPndWN6kM6bAhKalwvylnMlmXpVjY=
+
+Name: lib/arm64-v8a/libboost_unit_test_framework-mt.so
+SHA-256-Digest: rxmiDezI9/lqtAKK1VxYEswRQEouyJSHs53eQ8fR8p0=
+
+Name: lib/arm64-v8a/libboost_wave-mt.so
+SHA-256-Digest: nNkoSAPseTmKpoo+r8f/IeJH6SuuRt9A3v0ean/kuvs=
+
+Name: lib/arm64-v8a/libboost_wserialization-mt.so
+SHA-256-Digest: M5HJQeXpPaigXch6p/0tk7Sm3Us8GHLtvk50AOyS1FM=
+
+Name: lib/arm64-v8a/libc++_shared.so
+SHA-256-Digest: WaONWc4BxP2pCi2O2p3pgIo5Lja+bLVUUdMNqzeybLA=
+
+Name: lib/arm64-v8a/libicui18n.cr.so
+SHA-256-Digest: +jaic+X0uELbRFomrhzBN/JueSX1j3jwDGGuyTjidaI=
+
+Name: lib/arm64-v8a/libicuuc.cr.so
+SHA-256-Digest: fkQbxprH5mUlrzPyMwZegXzWBcjRX7wDSYWCG6AV/yE=
+
+Name: lib/arm64-v8a/libv8.cr.so
+SHA-256-Digest: Swbwgyw2n7rmMieGcgR2s6ZumDDNy9NfRaZ1Ueh2Ob4=
+
+Name: lib/arm64-v8a/libv8_libbase.cr.so
+SHA-256-Digest: O+kfy+qz79tDXfzZFIfaPdpEfeJbb3jfSHm7ILQMeyI=
+
+Name: lib/arm64-v8a/libv8_libplatform.cr.so
+SHA-256-Digest: YXCcBXEnbicpR2140+a5nktrfZWEfxGYLQGUNHNV+aE=
+
+Name: res/drawable-v24/$ic_launcher_foreground__0.xml
+SHA-256-Digest: LksWsZ/SY7/UHP7ZHhOx1Jn6AlQyoDis0jUI7T6nrjs=
+
+Name: res/drawable-v24/ic_launcher_foreground.xml
+SHA-256-Digest: uzUTX75m2Sr0tYBIUtVEKBihDnJaVykue3oF+tJxjns=
+
+Name: res/drawable/ic_launcher_background.xml
+SHA-256-Digest: hRSE8jmipT658Wrw4zlZLhpYCc0Dk+Z9rB407omsfZA=
+
+Name: res/mipmap-anydpi-v26/ic_launcher.xml
+SHA-256-Digest: XOmgenpR01xemO0Mj4wlJDJjgR6NkN+LsMs0nil2wpo=
+
+Name: res/mipmap-anydpi-v26/ic_launcher_round.xml
+SHA-256-Digest: Tu17Vvva8ido7qnu5u0TD9SLmKioAdeMDBym4LAD7nA=
+
+Name: res/mipmap-hdpi-v4/ic_launcher.png
+SHA-256-Digest: A7+KUn4zvcQp73JWdlTR2P2M35ZUELi5/5AldWojlSc=
+
+Name: res/mipmap-hdpi-v4/ic_launcher_round.png
+SHA-256-Digest: DUf3vP7YpPUjrE3NzUCO83YgE4uT6vAa4XSNbFGwPTs=
+
+Name: res/mipmap-mdpi-v4/ic_launcher.png
+SHA-256-Digest: g+C5Ay7iJe2fgEzM9e++RnR/wLhtE33mvj25QPRYaAM=
+
+Name: res/mipmap-mdpi-v4/ic_launcher_round.png
+SHA-256-Digest: 5NmjBs50UGXqXjkK1sn6hTfGiNSBVvtENRqiT4sy/LU=
+
+Name: res/mipmap-xhdpi-v4/ic_launcher.png
+SHA-256-Digest: Zy6HIsH6V89oBdvgXtHd07NrD+bbD/0mcChjj/RHlQ4=
+
+Name: res/mipmap-xhdpi-v4/ic_launcher_round.png
+SHA-256-Digest: LjU+D7dFhgxpg1+eJktaRt4WJoRyAs5xmbZ8w0Ykw0g=
+
+Name: res/mipmap-xxhdpi-v4/ic_launcher.png
+SHA-256-Digest: lyYwHUyvbjd7/LfaW7uqfdCq9e2R8ItFnf1MCicWvvM=
+
+Name: res/mipmap-xxhdpi-v4/ic_launcher_round.png
+SHA-256-Digest: TpbJTXFqrWuaeylgF2cfJ4/fP0qNCf99lofcy9/OxAI=
+
+Name: res/mipmap-xxxhdpi-v4/ic_launcher.png
+SHA-256-Digest: us2VDohOprplYFhm34Hy+wzeJ7m6W3o6ZTno64eYyJM=
+
+Name: res/mipmap-xxxhdpi-v4/ic_launcher_round.png
+SHA-256-Digest: fM0n6BdnBM+14pRBG3yDAQe/e5KypVqwv/JcrpOpoUA=
+
+Name: resources.arsc
+SHA-256-Digest: 6JY/GHPrpHXZpxnjN7p1Kjrawpr5K/qR3py2vQyvB1o=
+

@@ -1,0 +1,115 @@
+/*
+
+  This example demonstrates how to configure and issue http requests.
+  
+  By default, no certificate verification will be done, so any call to a https server will succeed.
+  
+  RadJav comes with some default certificates built in. By specifying 'useDefaultCertificates' we tell
+  the httpsRequest to load these into the context. NOTE: in order to force fainling on handshake on access to 
+  an untrusted host, we also need to specify 'VerifyPeer' flag.
+
+  Finally, we can also load certificated from an external trust file (PEM format).
+  
+*/
+
+
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+RadJav.Console.println("------------ httpsRequest.xrj test --------------");
+
+var printContent = false;
+
+try
+{
+    var req = new RadJav.Net.HttpRequest();
+
+    req.connect("https://ev-root.chain-demos.digicert.com/info/index.html").then (
+	function (target)
+	{
+	    RadJav.Console.println("No certificate verification");
+	    
+	    if (printContent)
+		RadJav.Console.println(req.fetchSync(target));
+	});
+
+}
+catch (error)
+{
+    RadJav.Console.println(error);
+}
+
+
+try
+{
+    var req = new RadJav.Net.HttpRequest({verifyMode: "VerifyPeer"});
+
+    req.connect("https://ev-root.chain-demos.digicert.com/info/index.html").then (
+	function (target)
+	{
+	    RadJav.Console.println("VerifyPeer flag only");
+
+	    if (printContent)
+		RadJav.Console.println(req.fetchSync(target));
+	})
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+
+}
+catch (error)
+{
+    RadJav.Console.println(error);
+}
+
+
+try
+{
+    var req = new RadJav.Net.HttpRequest({useDefaultCertificates: "true", verifyMode: "VerifyPeer"});
+
+    req.connect("https://ev-root.chain-demos.digicert.com/info/index.html").then (
+	function (target)
+	{
+	    RadJav.Console.println("Loaded default certificates");
+	    if (printContent)
+		RadJav.Console.println(req.fetchSync(target));
+	    
+	});
+
+}
+catch (error)
+{
+    RadJav.Console.println(error);
+}
+
+
+
+try
+{
+    var req = new RadJav.Net.HttpRequest({trustStore: "cert/DigiCert.crt", verifyMode: "VerifyPeer"});
+
+    req.connect("https://ev-root.chain-demos.digicert.com/info/index.html").then (
+	function (target)
+	{
+	    RadJav.Console.println("Loaded certificate from external file");
+	    if (printContent)
+		RadJav.Console.println(req.fetchSync(target));
+	})
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+
+}
+catch (error)
+{
+    RadJav.Console.println(error);
+}
+

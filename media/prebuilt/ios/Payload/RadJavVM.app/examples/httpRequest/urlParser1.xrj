@@ -1,0 +1,42 @@
+/*
+
+  This test demonstrates how to issue http requests to a server and grab content.
+  The test will issue two cascaded requests to the same URL.
+  
+*/
+
+
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+
+RadJav.Console.println("------------ urlParser.xrj test --------------");
+
+var req = new RadJav.Net.HttpRequest();
+
+try
+{
+    req.newRequest("httpp://www.brainjar.com/java/host/test.html")
+	.then(function (data)
+	      {
+		  RadJav.Console.println(data);
+	      })
+	.catch(function(err)
+	       {
+		   RadJav.Console.println("LLLLLLLLLLLLLLLL " + err);
+		   throw err;
+	       });
+    
+}
+catch (error)
+{
+    RadJav.Console.println("ERROR: " + error)
+}
+
+
+RadJav.Console.println("FUUUUUUCK");
+

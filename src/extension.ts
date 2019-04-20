@@ -4,8 +4,9 @@
 
 import * as vscode from 'vscode';
 import * as Core from 'vscode-chrome-debug-core';
-import { RadJavTools } from "./RadJavTools";
+import { RadJavTools } from "radjav-tools-lib";
 import { PreviewManager } from "./PreviewManager";
+import * as path from "path";
 
 export function activate(context: vscode.ExtensionContext)
 {
@@ -33,6 +34,28 @@ export function activate(context: vscode.ExtensionContext)
                 context.subscriptions.push (PreviewManager.create (true, context.extensionPath));
         }));
 
+    context.subscriptions.push (vscode.commands.registerCommand ("extension.radjav-debug2.deployToIOS",
+        function ()
+        {
+            let root: vscode.WorkspaceFolder = vscode.workspace.workspaceFolders[0];
+            let folderPath: string = root.uri.fsPath;
+            let binPath: string = path.join (context.extensionPath, "media", "prebuilt", "ios");
+            let imobiledevice: string = vscode.workspace.getConfiguration ("radjav").get<string> ("imobiledevice");
+
+            RadJavTools.buildIPA (binPath, folderPath);
+            RadJavTools.installIPA (`${folderPath}/app.ipa`, imobiledevice);
+        }));
+    context.subscriptions.push (vscode.commands.registerCommand ("extension.radjav-debug2.deployToAndroid",
+        function ()
+        {
+            let root: vscode.WorkspaceFolder = vscode.workspace.workspaceFolders[0];
+            let folderPath: string = root.uri.fsPath;
+            let binPath: string = path.join (context.extensionPath, "media", "prebuilt", "android");
+            let androidsdk: string = vscode.workspace.getConfiguration ("radjav").get<string> ("androidsdk");
+
+            RadJavTools.buildAPK (binPath, folderPath, "app.xrj", androidsdk);
+            RadJavTools.installAPK (`${folderPath}/app.apk`, androidsdk);
+        }));
     context.subscriptions.push (vscode.commands.registerCommand ("extension.radjav-debug2.convertToGUIJSON",
         function ()
         {
@@ -90,7 +113,8 @@ class RadJavConfigurationProvider implements vscode.DebugConfigurationProvider
 		// if launch.json is missing or empty
 		if (!config.type && !config.request && !config.name) {
 			const editor = vscode.window.activeTextEditor;
-			if (editor && editor.document.languageId === 'markdown' ) {
+            if (editor)// && editor.document.languageId === 'markdown' )
+            {
 				config.type = 'radjav';
 				config.name = 'Launch';
 				config.request = 'launch';

@@ -1,0 +1,90 @@
+var plane = null;
+var cube = null;
+var sphere = null;
+var timing = 16;
+
+function rotateObjects()
+{
+	//Rotate each primitive by 1 degree on several axes
+	plane.yaw(1);
+	plane.roll(1);
+	
+	cube.yaw(1);
+	cube.roll(1);
+	
+	sphere.yaw(1);
+	sphere.roll(1);
+	
+	//Repeat rotation
+	setTimeout (rotateObjects, timing);
+}
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getC3DLibrary ()).then (function ()
+{
+	RadJav.runApplication (function ()
+	{
+		//Create main 3D window and scene
+		var canvas = new RadJav.GUI.Canvas3D ("win", "Canvas3D: Primitives example");
+		canvas.create ().then (function (canvas2)
+		{
+			//Set ambient lighting in entire scene
+			canvas2.setAmbientLightColor(new RadJav.Color(0.1, 0.1, 0.1, 1));
+			
+			//Create main light
+			var light = new RadJav.C3D.Light(canvas2, "MainLight");
+			light.setColor(new RadJav.Color(1, 1, 1, 1));
+			light.setPosition(0,0,0);
+			light.lookAt(-1,-1,-1);
+			
+			//Add main light into the scene
+			canvas2.addToScene(light);
+			
+			//Create camera using
+			var camera = new RadJav.C3D.Camera(canvas2, "MainCamera");
+			camera.setPerspective(true);
+			camera.setNearClipPlane(1);
+			camera.setFarClipPlane(1000);
+			camera.setFOV(60);
+			camera.setAutoAspectRatio(true);
+			camera.setBackgroundColor(new RadJav.Color(0, 0, 0, 1));
+			camera.setPosition(0,0,0);
+			camera.lookAt(0,0,-1);
+			
+			//Add camera into the scene
+			canvas2.addToScene(camera);
+			
+			//Create root scene object which will hold primitives
+			var root = new RadJav.C3D.Object3D(canvas2, "Root");
+			
+			//Create plane 3D object
+			plane = new RadJav.C3D.Plane(canvas2, "Plane");
+			plane.setPosition(-200, 0, 0);
+			
+			//Add plane 3D object to root as a child
+			root.addChild(plane);
+			
+			//Create cube 3D object
+			cube = new RadJav.C3D.Cube(canvas2, "Cube");
+			cube.setPosition(0, 0, 0);
+			
+			//Add cube 3D object to root as a child
+			root.addChild(cube);
+			
+			//Create sphere 3D object
+			sphere = new RadJav.C3D.Sphere(canvas2, "Sphere");
+			sphere.setPosition(200, 0, 0);
+			
+			//Add sphere 3D object to root as a child
+			root.addChild(sphere);
+			
+			//Set position of root 3D object which has primitives
+			root.setPosition(0,0,-500);
+			
+			//Add root 3D object into the scene
+			canvas2.addToScene(root);
+			
+			//Start rotation
+			setTimeout(rotateObjects, timing);
+		});
+	});
+});

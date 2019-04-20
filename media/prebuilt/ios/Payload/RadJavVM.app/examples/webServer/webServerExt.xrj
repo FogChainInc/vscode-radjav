@@ -1,0 +1,10 @@
+var webServer = new RadJav.Net.WebServer ();
+
+webServer.listen (80);
+
+webServer.serve (function (request)
+	{
+		var response = "Hello world!";
+
+		return (response);
+	});

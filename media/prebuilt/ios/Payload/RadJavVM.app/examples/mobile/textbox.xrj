@@ -1,0 +1,56 @@
+var window;
+
+var textboxText;
+var textboxNumbered;
+var textboxDecimal;
+var textboxPhone;
+var textboxEmail;
+var textboxPassword;
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (function () {
+		var screenWidth = RadJav.getPrimaryScreen().getWidth();
+		var screenHeight = RadJav.getPrimaryScreen().getHeight();
+		
+		window = new RadJav.MUI.View("win", "Textbox Example");
+		window.createMainView();
+		window.setPosition(0, 0);
+		window.setSize(screenWidth, screenHeight);
+		
+		textboxText = new RadJav.GUI.Textbox("textbox", "", window);
+		textboxText.create();
+		textboxText.setInputMode(RadJav.GUI.Textbox.InputModeText);
+		textboxText.setPosition(50, 50);
+		textboxText.setSize(200, 50);
+		
+		textboxNumbered = new RadJav.GUI.Textbox("textbox", "", window);
+		textboxNumbered.create();
+		textboxNumbered.setInputMode(RadJav.GUI.Textbox.InputModeNumber);
+		textboxNumbered.setPosition(50, 150);
+		textboxNumbered.setSize(200, 50);
+		
+		textboxDecimal = new RadJav.GUI.Textbox("textbox", "", window);
+		textboxDecimal.create();
+		textboxDecimal.setInputMode(RadJav.GUI.Textbox.InputModeDecimal);
+		textboxDecimal.setPosition(50, 250);
+		textboxDecimal.setSize(200, 50);
+		
+		textboxPhone = new RadJav.GUI.Textbox("textbox", "", window);
+		textboxPhone.create();
+		textboxPhone.setInputMode(RadJav.GUI.Textbox.InputModePhone);
+		textboxPhone.setPosition(50, 350);
+		textboxPhone.setSize(200, 50);
+		
+		textboxEmail = new RadJav.GUI.Textbox("textbox", "", window);
+		textboxEmail.create();
+		textboxEmail.setInputMode(RadJav.GUI.Textbox.InputModeEmail);
+		textboxEmail.setPosition(50, 450);
+		textboxEmail.setSize(200, 50);
+		
+		textboxPassword = new RadJav.GUI.Textbox("textbox", "", window);
+		textboxPassword.create();
+		textboxPassword.setInputMode(RadJav.GUI.Textbox.InputModePassword);
+		textboxPassword.setPosition(50, 550);
+		textboxPassword.setSize(200, 50);
+	});
+});

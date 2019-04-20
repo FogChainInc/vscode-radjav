@@ -1,0 +1,60 @@
+var model = null;
+var timing = 16;
+
+function rotateModel()
+{
+	//Rotate model by 1 degree on Y(up) axes
+	model.yaw(1);
+	
+	//Repeat rotation
+	setTimeout (rotateModel, timing);
+}
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getC3DLibrary ()).then (function ()
+{
+	RadJav.runApplication (function ()
+	{
+		//Create main 3D window and scene
+		var canvas = new RadJav.GUI.Canvas3D ("win", "Canvas3D: Collada model example");
+		canvas.create ().then (function (canvas2)
+		{
+			//Set ambient lighting in entire scene
+			canvas2.setAmbientLightColor(new RadJav.Color(0.1, 0.1, 0.1, 1));
+			
+			//Create main light
+			var light = new RadJav.C3D.Light(canvas2, "MainLight");
+			light.setColor(new RadJav.Color(1, 1, 1, 1));
+			light.setPosition(0,0,0);
+			light.lookAt(-1,-1,-1);
+			
+			//Add main light into the scene
+			canvas2.addToScene(light);
+			
+			//Create camera using
+			var camera = new RadJav.C3D.Camera(canvas2, "MainCamera");
+			camera.setPerspective(true);
+			camera.setNearClipPlane(1);
+			camera.setFarClipPlane(100);
+			camera.setFOV(60);
+			camera.setAutoAspectRatio(true);
+			camera.setBackgroundColor(new RadJav.Color(1, 1, 1, 1));
+			camera.setPosition(0,1,0);
+			camera.lookAt(0,1,-1);
+			
+			//Add camera into the scene
+			canvas2.addToScene(camera);
+			
+			model = new RadJav.C3D.Model(canvas2,
+										"/Users/mikalaiturankou/Documents/Work/Exadel/RadJav/Compilation/RadJavPrivate/examples/canvas3d/rabbit.dae",
+										"Rabbit");
+			model.load();
+			model.setPosition(0,0,-5);
+			
+			//Add root 3D object into the scene
+			canvas2.addToScene(model);
+			
+			//Start rotation
+			setTimeout(rotateModel, timing);
+		});
+	});
+});

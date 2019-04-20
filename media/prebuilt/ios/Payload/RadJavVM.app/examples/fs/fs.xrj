@@ -1,0 +1,27 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+var io = new RadJav.IO.FileIO();
+var iotext = new RadJav.IO.TextFile();
+
+io.onFileList (function (files)
+	{
+		RadJav.alert(files);
+	});
+
+var files = io.listFiles("c:\\", false);
+alert(files);
+
+var isdir = io.isDir("C:\\");
+alert(isdir);
+
+var isfile = io.isFile("C:\\");
+alert(isfile);
+
+iotext.writeFile("c:\\foo.txt", "This is my test file.", RadJav.IO.TextFile.write);
+
+io.listFilesAsync("c:\\", false);

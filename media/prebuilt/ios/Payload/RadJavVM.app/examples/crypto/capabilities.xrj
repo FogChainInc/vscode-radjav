@@ -1,0 +1,58 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+RadJav.Console.println("*** Hash algorithms:\n");
+
+{
+    var capabilities = RadJav.Crypto.Hash.getCapabilities();
+
+    if ( (typeof capabilities.cryptoLibs === "object") && (capabilities.cryptoLibs !== null) )
+    {
+	RadJav.Console.println("Has Crypto Implementation: ");
+	for (var cryptoLib in capabilities.cryptoLibs)
+	{
+	    RadJav.Console.println(cryptoLib);
+	}
+    }
+
+    // Go for OpenSSL
+    if ( (typeof capabilities.cryptoLibs.OpenSSL === "object") && (capabilities.cryptoLibs.OpenSSL !== null) )
+    {
+	var cryptoLib = capabilities.cryptoLibs.OpenSSL;
+	for (var idx in cryptoLib.cipherAlgorithms)
+	{
+	    RadJav.Console.println(cryptoLib.cipherAlgorithms[idx].name + ":\t" + cryptoLib.cipherAlgorithms[idx].description);
+	}
+
+    }
+}
+
+RadJav.Console.println("\n*** Cipher algorithms:\n");
+
+{
+    var capabilities = RadJav.Crypto.Cipher.getCapabilities();
+
+    if ( (typeof capabilities.cryptoLibs === "object") && (capabilities.cryptoLibs !== null) )
+    {
+	RadJav.Console.println("Has Crypto Implementation: ");
+	for (var cryptoLib in capabilities.cryptoLibs)
+	{
+	    RadJav.Console.println(cryptoLib);
+	}
+    }
+
+    // Go for OpenSSL
+    if ( (typeof capabilities.cryptoLibs.OpenSSL === "object") && (capabilities.cryptoLibs.OpenSSL !== null) )
+    {
+	var cryptoLib = capabilities.cryptoLibs.OpenSSL;
+	for (var idx in cryptoLib.cipherAlgorithms)
+	{
+	    RadJav.Console.println(cryptoLib.cipherAlgorithms[idx].name + ":\t" + cryptoLib.cipherAlgorithms[idx].description);
+	}
+
+    }
+}

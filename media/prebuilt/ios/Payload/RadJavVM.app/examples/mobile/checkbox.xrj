@@ -1,0 +1,29 @@
+var window;
+
+RadJav.initialize (RadJav.getStandardLibrary (),
+					RadJav.getGUILibrary (),
+					RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (function () {
+		var screenWidth = RadJav.getPrimaryScreen().getWidth();
+		var screenHeight = RadJav.getPrimaryScreen().getHeight();
+		
+		window = new RadJav.MUI.View("win", "Window Example");
+		window.createMainView().then(function(win) {
+			window = win;
+			window.setPosition(0, 0);
+			window.setSize(screenWidth, screenHeight);
+			
+			var checkbox = new RadJav.GUI.Checkbox("checkbox", "", window);
+			checkbox.create().then(function(chk) {
+				checkbox = chk;
+				checkbox.setPosition(50, screenHeight/2);
+				checkbox.setSize(screenWidth/2, 100);
+				
+				checkbox.on("changed", function () {
+					RadJav.Console.log("Checkbox value changed to");
+					RadJav.Console.log(checkbox.isChecked() ? "true" : "false");
+				});
+			});
+		});
+	});
+});

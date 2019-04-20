@@ -1,0 +1,8 @@
+var thread = new RadJav.Thread ();
+
+thread.on ("thread", function ()
+	{
+		this.postMessage ();
+	});
+
+thread.start ();

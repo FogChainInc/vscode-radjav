@@ -14,6 +14,11 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
+    "@types/express": "^4.16.1",
+    "archiver": "^3.0.0",
+    "express": "^4.16.4",
+    "radjav-tools-lib": "^1.1.2",
+    "recursive-copy": "^2.0.10",
     "vscode-chrome-debug-core": "^6.7.31",
     "vscode-debugadapter": "^1.33.0-pre.2",
     "vscode-languageclient": "^5.2.1",
@@ -47,9 +52,11 @@
     "onLanguage:javascript",
     "onCommand:extension.radjav-debug2.toggleSkippingFile",
     "onCommand:extension.radjav-debug2.convertToGUIJSON",
-		"onWebviewPanel:extension.radjav-debug2.preview",
-		"onCommand:extension.radjav-debug2.showPreview",
-		"onCommand:extension.radjav-debug2.showPreviewToSide"
+    "onWebviewPanel:extension.radjav-debug2.preview",
+    "onCommand:extension.radjav-debug2.showPreview",
+    "onCommand:extension.radjav-debug2.showPreviewToSide",
+    "onCommand:extension.radjav-debug2.deployToIOS",
+    "onCommand:extension.radjav-debug2.deployToAndroid"
   ],
   "scripts": {
     "postinstall": "node ./node_modules/vscode/bin/install",
@@ -75,6 +82,27 @@
     "url": "https://github.com/Microsoft/vscode-node-debug2/issues"
   },
   "contributes": {
+    "configuration": {
+      "type": "object",
+      "title": "RadJav",
+      "properties": {
+        "radjav.path": {
+          "type": "string",
+          "default": "RadJavVM",
+          "description": "Path to the RadJavVM binary."
+        },
+        "radjav.androidsdk": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the Android SDK."
+        },
+        "radjav.imobiledevice": {
+          "type": "string",
+          "default": "ideviceinstaller",
+          "description": "Path to ideviceinstaller in the iMobileDevice installation directory."
+        }
+      }
+    },
     "languages": [
       {
         "id": "javascript",
@@ -102,6 +130,19 @@
         "program": "./out/src/nodeDebug.js",
         "runtime": "node",
         "runtimeArgs": [],
+        "configurationSnippets": [
+          {
+            "label": "RadJav: Launch",
+            "description": "Launch a native OS RadJav app.",
+            "body": {
+              "type": "radjav",
+              "request": "launch",
+              "name": "RadJav: Launch App",
+              "program": "^\"${2:\\${workspaceFolder\\}}/app.xrj\"",
+              "cwd": "^\"${2:\\${workspaceFolder\\}}\""
+            }
+          }
+        ],
         "configurationAttributes": {
           "launch": {
             "required": [
@@ -387,12 +428,14 @@
       }
     ],
     "menus": {
-      "editor/title": [{
-        "command": "extension.radjav-debug2.showPreviewToSide",
-        "when": "resourceExtname == .xrj",
-        "alt": "extension.radjav-debug2.showPreview",
-        "group": "navigation"
-      }],
+      "editor/title": [
+        {
+          "command": "extension.radjav-debug2.showPreviewToSide",
+          "when": "resourceExtname == .xrj",
+          "alt": "extension.radjav-debug2.showPreview",
+          "group": "navigation"
+        }
+      ],
       "debug/callstack/context": [
         {
           "command": "extension.radjav-debug2.toggleSkippingFile",
@@ -410,24 +453,32 @@
         "command": "extension.radjav-debug2.convertToGUIJSON",
         "title": "%convertToGUIJSON%"
       },
-			{
-				"command": "extension.radjav-debug2.showPreview",
-				"title": "RadJav App Preview",
-				"category": "RadJav",
-				"icon": {
-					"light": "./media/Preview.svg",
-					"dark": "./media/Preview_inverse.svg"
-				}
-			},
-			{
-				"command": "extension.radjav-debug2.showPreviewToSide",
-				"title": "RadJav App Preview",
-				"category": "RadJav",
-				"icon": {
-					"light": "./media/PreviewOnRightPane_16x.svg",
-					"dark": "./media/PreviewOnRightPane_16x_dark.svg"
-				}
-			}
+      {
+        "command": "extension.radjav-debug2.deployToIOS",
+        "title": "%deployToIOS%"
+      },
+      {
+        "command": "extension.radjav-debug2.deployToAndroid",
+        "title": "%deployToAndroid%"
+      },
+      {
+        "command": "extension.radjav-debug2.showPreview",
+        "title": "RadJav App Preview",
+        "category": "RadJav",
+        "icon": {
+          "light": "./media/Preview.svg",
+          "dark": "./media/Preview_inverse.svg"
+        }
+      },
+      {
+        "command": "extension.radjav-debug2.showPreviewToSide",
+        "title": "RadJav App Preview",
+        "category": "RadJav",
+        "icon": {
+          "light": "./media/PreviewOnRightPane_16x.svg",
+          "dark": "./media/PreviewOnRightPane_16x_dark.svg"
+        }
+      }
     ],
     "keybindings": [
       {
@@ -438,5 +489,5 @@
       }
     ]
   },
-  "typings": "d.ts/RaddJav.d.ts"
+  "types": "d.ts/RaddJav.d.ts"
 }

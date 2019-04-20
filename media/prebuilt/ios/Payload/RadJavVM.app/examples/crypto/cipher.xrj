@@ -1,0 +1,39 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+try
+{
+
+    var cipher = new RadJav.Crypto.Cipher({cryptoLibrary: "OpenSSL",
+					   cipherAlgorithm: "aes-128-cbc",
+					   secret: "Beer",
+					   outputEncoding: "base64"});
+
+    var text = 'asdfadfadsf';
+    var cipherResult = cipher.cipherSync(text);
+    RadJav.Console.println("Cipher Algorithm: " + cipher.cipherAlgorithm);
+    RadJav.Console.println("Cipher Result: " + cipherResult);
+
+    var decipher = new RadJav.Crypto.Decipher({cryptoLibrary: "OpenSSL",
+					       cipherAlgorithm: "aes-128-cbc",
+					       secret: "Beer",
+					       inputEncoding: "base64"
+					      });
+
+    var decipherResult = decipher.decipherSync(cipherResult);
+    RadJav.Console.println("Decipher Result: " + decipherResult);
+
+    alert("Done!\ncipher Alg: " + cipher.cipherAlgorithm +
+	  "\nPlain Text: " + text +
+	  "\nCipher: " + cipherResult +
+	  "\nDecipher: " + decipherResult);
+    
+}
+catch (error)
+{
+    RadJav.Console.println(error);
+}

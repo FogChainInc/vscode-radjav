@@ -1,0 +1,118 @@
+/*
+
+  This example demonstrates URI parser. Each test below will yield an error message.
+  
+*/
+
+
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+
+RadJav.Console.println("------------ urlParser.xrj test --------------");
+
+var req = new RadJav.Net.HttpRequest();
+
+try
+{
+    req.newRequest("httpp://www.brainjar.com/java/host/test.html")
+	.then (function (data)
+	      {
+		  RadJav.Console.println(data);
+	      })
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+    
+}
+catch (error)
+{
+    RadJav.Console.println("ERROR: " + error)
+}
+
+try
+{
+    req.newRequest("httpp://www.brain!jar.com/java/host/test.html")
+	.then (function (data)
+	      {
+		  RadJav.Console.println(data);
+	      })
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+    
+}
+catch (error)
+{
+    RadJav.Console.println("ERROR: " + error)
+}
+
+
+
+try
+{
+    req.newRequest("httpp://www.brainjar.com:9a/java/host/test.html")
+	.then (function (data)
+	      {
+		  RadJav.Console.println(data);
+	      })
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+    
+}
+catch (error)
+{
+    RadJav.Console.println("ERROR: " + error)
+}
+
+
+try
+{
+    req.newRequest("httpp://www.brain@jar.com/java/host/test.html")
+	.then (function (data)
+	      {
+		  RadJav.Console.println(data);
+	      })
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+    
+}
+catch (error)
+{
+    RadJav.Console.println("ERROR: " + error)
+}
+
+
+try
+{
+    req.newRequest("httpp://user1@www.brain@jar.com/java/host/test.html")
+	.then ( function (data)
+	      {
+		  RadJav.Console.println(data);
+	      })
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+    
+}
+catch (error)
+{
+    RadJav.Console.println("ERROR: " + error)
+}
+

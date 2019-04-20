@@ -1,0 +1,153 @@
+var navi;
+
+var rootWin;
+var win1;
+var win2;
+var win3;
+
+var btnBackToWin1;
+var btnBackToWin2;
+
+var btnGoToWin1;
+var btnGoToWin2;
+var btnGoToWin3;
+
+var img1;
+var img2;
+var img3;
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (async function (rootWin) {
+		var screenWidth = rootWin.getWidth ();
+		var screenHeight = rootWin.getHeight();
+
+		if (RadJav.isMobile () == true)
+		{
+			screenWidth = RadJav.getPrimaryScreen().getWidth();
+			screenHeight = RadJav.getPrimaryScreen().getHeight();
+		}
+		
+		//Create root View
+		rootWin.setPosition(0, 0);
+		rootWin.setSize(screenWidth, screenHeight);
+		
+		RadJav.Console.log("Root win created");
+		
+		//Create View navigator
+		navi = new RadJav.MUI.Navigator(rootWin, "navigator", "", rootWin);
+		await navi.create ();
+		navi.setPosition(0, 0);
+		navi.setSize(screenWidth, screenHeight);
+		
+		//Create first View
+		win1 = new RadJav.MUI.View("win1", "Window 1", navi);
+		await win1.create();
+		win1.setPosition(0, 0);
+		win1.setSize(screenWidth, screenHeight);
+		
+		//Set win1 as main presented View
+		RadJav.Console.log("Switching to Win1");
+		navi.push(win1);
+		
+		img1 = new RadJav.GUI.Image ("image1", "", win1);
+		await img1.create();
+		img1.setPosition((screenWidth-256)/2, screenHeight/5);
+		img1.setSize(256, 256);
+		//img1.setScaleMode(RadJav.GUI.Image.ScaleModeAspectFit);
+		
+		if (RadJav.OS.type == "android")
+			img1.setImage("/storage/emulated/0/Android/data/com.fogchain.radjavvm/cache/examples/mobile/navigator/window_one.png");
+		else if ((RadJav.OS.type == "ios") || RadJav.OS.type == "html5")
+			img1.setImage("/examples/mobile/navigator/window_one.png");
+		else
+			img1.setImage("./window_one.png");
+		
+		btnGoToWin2 = new RadJav.GUI.Button("button", "Go to Win 2", win1);
+		await btnGoToWin2.create();
+		btnGoToWin2.setPosition(screenWidth - screenWidth/3, screenHeight/2);
+		
+		btnGoToWin2.on("click", function() {
+			//Go to win2, win1 will remain in Navigator stack
+			RadJav.Console.log("Switching to Win2");
+			navi.push(win2);
+		});
+		
+		//Create second View
+		win2 = new RadJav.MUI.View("win2", "Window 2", navi);
+		await win2.create();
+		win2.setPosition(0, 0);
+		win2.setSize(screenWidth, screenHeight);
+		
+		img2 = new RadJav.GUI.Image("image2", "", win2);
+		await img2.create();
+		img2.setPosition ((screenWidth-256)/2, screenHeight/5);
+		img2.setSize (256, 256);
+		//img2.setScaleMode(RadJav.GUI.Image.ScaleModeAspectFit);
+		
+		if (RadJav.OS.type == "android")
+			img2.setImage("/storage/emulated/0/Android/data/com.fogchain.radjavvm/cache/examples/mobile/navigator/window_two.png");
+		else if ((RadJav.OS.type == "ios") || RadJav.OS.type == "html5")
+			img2.setImage("/examples/mobile/navigator/window_two.png");
+		else
+			img2.setImage("./window_two.png");
+		
+		btnBackToWin1 = new RadJav.GUI.Button("button", "Go back to Win 1", win2);
+		await btnBackToWin1.create();
+		btnBackToWin1.setPosition(20, screenHeight/2);
+		btnBackToWin1.on("click", function() {
+			//Remove top most View from Navigator stack and make previous View active
+			RadJav.Console.log("Switching back");
+			navi.pop();
+			//navi.pop(null);
+		});
+		
+		btnGoToWin3 = new RadJav.GUI.Button("button", "Go to Win 3", win2);
+		await btnGoToWin3.create();
+		btnGoToWin3.setPosition(screenWidth - screenWidth/3, screenHeight/2);
+		btnGoToWin3.on("click", function() {
+			//Go to win3, win1 and win2 will remain in Navigator stack
+			RadJav.Console.log("Switching to Win3");
+			navi.push(win3);
+		});
+		
+		//Create third View
+		win3 = new RadJav.MUI.View("win3", "Window 3", navi);
+		await win3.create();
+		win3.setPosition(0, 0);
+		win3.setSize(screenWidth, screenHeight);
+		
+		img3 = new RadJav.GUI.Image("image3", "", win3);
+		await img3.create();
+		img3.setPosition((screenWidth-256)/2, screenHeight/5);
+		img3.setSize(256, 256);
+		//img3.setScaleMode(RadJav.GUI.Image.ScaleModeAspectFit);
+		
+		if (RadJav.OS.type == "android")
+			img3.setImage("/storage/emulated/0/Android/data/com.fogchain.radjavvm/cache/examples/mobile/navigator/window_three.png");
+		else if ((RadJav.OS.type == "ios") || RadJav.OS.type == "html5")
+			img3.setImage("/examples/mobile/navigator/window_three.png");
+		else
+			img3.setImage("./window_three.png");
+		
+		btnBackToWin2 = new RadJav.GUI.Button("button", "Go back to Win 2", win3);
+		await btnBackToWin2.create();
+		btnBackToWin2.setPosition(20, screenHeight/2);
+		btnBackToWin2.on("click", function() {
+			//Remove top most View from Navigator stack and make previous View active
+			RadJav.Console.log("Switching back");
+			navi.pop();
+			//navi.pop(win2);
+		});
+		
+		btnGoToWin1 = new RadJav.GUI.Button("button", "Go to Win 1", win3);
+		await btnGoToWin1.create();
+		btnGoToWin1.setPosition(screenWidth/2, screenHeight/2);
+		btnGoToWin1.on("click", function() {
+			//Remove Views from Navigator stack until win1 found
+			//or until one View left in Navigator stack, then activate that View
+			RadJav.Console.log("Switching to Win1");
+			navi.pop(win1);
+			//navi.pop(null);
+		});
+	}, true);
+});

@@ -1,0 +1,28 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+
+RadJav.Console.println("Args: " + RadJav.OS.args[0]);
+
+port = 8013;
+if (RadJav.OS.args.length > 0 && RadJav.OS.args[0] != undefined)
+    port = RadJav.OS.args[0];
+
+
+var tcpClient = new RadJav.Net.TcpClient();
+
+tcpClient.connect("localhost", port);
+tcpClient.send("0123456789");
+var result = tcpClient.receive();
+
+RadJav.Console.println("Type: " + typeof result);
+RadJav.Console.println("Result: " + ab2str(result));
+
+
+function ab2str(buf) {
+  return String.fromCharCode.apply(null, new Uint8Array(buf));
+}

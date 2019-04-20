@@ -1,0 +1,67 @@
+var webServer = null;
+
+RadJav.startServer = function ()
+	{
+		webServer = new RadJav.Net.WebServer ();
+
+		webServer.serve (function (request)
+			{
+				return ({ serveDir: "../" });
+			});
+
+		webServer.listen (80);
+	};
+
+RadJav.stopServer = function ()
+	{
+		webServer.stop ();
+		webServer = null;
+	};
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary ()).then (function ()
+	{
+		RadJav.runApplication (function ()
+			{
+				var win = new RadJav.GUI.Window ("win", "Window Example");
+
+				win.create ().then (function (win2)
+					{
+						RadJav.GUI.create ({
+												type: "Button", 
+												name: "start", 
+												text: "Start server", 
+												parent: win2
+											}).then (function (button)
+												{
+													button.on ("click", function ()
+														{
+															if (webServer == null)
+															{
+																button.setText ("Stop server");
+																RadJav.startServer ();
+															}
+															else
+															{
+																button.setText ("Start server");
+																RadJav.stopServer ();
+															}
+														});
+												});
+						RadJav.GUI.create ({
+												type: "Button", 
+												name: "stop", 
+												text: "View examples", 
+												parent: win2, 
+												position: new RadJav.Vector2 (200, 0), 
+												size: new RadJav.Vector2 (100, 40)
+											}).then (function (button)
+												{
+													button.on ("click", function ()
+														{
+															RadJav.OS.openWebBrowserURL ("http://127.0.0.1/examples/exampleBrowser.htm");
+														});
+												});
+					});
+			});
+	});
+

@@ -1,0 +1,160 @@
+var me = { id: "", name: "" };
+var clients = {};
+var online = null;
+var chatarea = null;
+var messageText = null;
+var client = null;
+var chatHistory = "";
+
+function addPerson (person)
+{
+	var row = new RadJav.GUI.List.Row ();
+	row.addItem (person.name);
+	online.addRow (row);
+}
+
+function updateClients (newClients)
+{
+	if (online == null)
+	{
+		clients = newClients;
+
+		return;
+	}
+
+	clients = newClients;
+
+	/// @fixme Be sure to delete all rows in online.
+	online.setRows ([]);
+
+	for (var key in newClients)
+	{
+		var client = newClients[key];
+
+		addPerson (client);
+	}
+}
+
+function sendChat ()
+{
+	client.send (JSON.stringify ({ type: "message", message: messageText.getText () }));
+	messageText.setText ("");
+}
+
+function updateChatHistory (newChatHistory)
+{
+	chatHistory = newChatHistory;
+
+	if (chatarea == null)
+		return;
+
+	chatarea.setText (newChatHistory);
+}
+
+function connectToServer ()
+{
+	var url = prompt ("Enter server url: ", "ws://127.0.0.1:6351/");
+
+	client = new RadJav.Net.WebSocketClient (url);
+	client.on ("receive", function (data)
+		{
+			var info = JSON.parse (data);
+
+			if (info.type == "updateNames")
+			{
+				chatHistory = info.chatHistory;
+				updateClients (info.clients);
+			}
+
+			if (info.type == "chatHistory")
+				updateChatHistory (info.message);
+		});
+	client.on ("error", function ()
+		{
+			alert ("Unable to connect to server.");
+
+			RadJav.exit ();
+		});
+	var promise = client.connect ();
+
+	promise = promise.then (function ()
+		{
+			client.send (JSON.stringify ({ type: "changeName", name: me.name }));
+		});
+
+	return (promise);
+}
+
+RadJav.initialize (RadJav.getStandardLibrary (), 
+		RadJav.getGUILibrary (), RadJav.getNetLibrary ()).then (
+	function ()
+	{
+		RadJav.runApplication (function ()
+			{
+				var win = new RadJav.GUI.Window ("win", "Chat");
+				win.create ().then (function (win2)
+					{
+						me.name = prompt ("Please enter your name: ", "Person" + Math.randomRange (1, 9));
+
+						// You don't wanna create spam using the while loop below on HTML5.
+						// Hence why there's this if statement, to prevent that.
+						if (RadJav.OS.HTML5 != null)
+						{
+							if (me.name == "")
+							{
+								alert ("You must enter a name!");
+
+								win.close ();
+							}
+						}
+						else
+						{
+							while (me.name == "")
+							{
+								alert ("You must enter a name!");
+
+								me.name = prompt ("Please enter your name: ");
+							}
+						}
+
+						connectToServer ().then (function ()
+							{
+								var gotData = function (data)
+									{
+										var json = JSON.parse (data);
+										RadJav.GUI.createObjects (json, win2).then (function (objs)
+											{
+												for (var iIdx = 0; iIdx < objs.length; iIdx++)
+												{
+													var obj = objs[iIdx];
+
+													if (obj.name == "online")
+													{
+														online = obj;
+														updateClients (clients);
+													}
+
+													if (obj.name == "chatarea")
+													{
+														chatarea = obj;
+														updateChatHistory (chatHistory);
+													}
+
+													if (obj.name == "message")
+														messageText = obj;
+												}
+											});
+									};
+
+								if (RadJav.OS.HTML5 != null)
+									RadJav.Net.httpRequest ("./chat/gui.json").then (gotData);
+								else
+								{
+									var textFile = new RadJav.IO.TextFile ();
+									var data = textFile.readFile ("./gui.json");
+									gotData (data);
+								}
+							});
+					});
+			});
+	});

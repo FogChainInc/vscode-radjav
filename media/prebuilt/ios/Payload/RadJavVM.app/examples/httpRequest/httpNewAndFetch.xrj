@@ -1,0 +1,44 @@
+/*
+
+  This example shows how to initiate a httpRequest connection with newRequest() call, then issue  multiple content
+  fetch requests
+  
+*/
+
+
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+
+RadJav.Console.println("------------ httpConnectAndFetch.xrj test --------------");
+
+try {
+    var req = new RadJav.Net.HttpRequest();
+
+    req.newRequest("Http://www.brainjar.com/java/host/test.html").then (function (result) {
+    
+	RadJav.Console.println(result);
+
+	RadJav.Console.println("-------------------------------------------------------------------------------");
+
+	RadJav.Console.println(req.fetchSync("/java/host/test.html"));
+
+    })
+	.catch (function (err)
+	       {
+		   RadJav.Console.println("Promise error: " + err);
+		   throw err;
+	       });
+}
+catch (error)
+{
+    RadJav.Console.println("ERROR: " + error)
+}
+
+
+	      
+

@@ -1,0 +1,34 @@
+var window;
+var initialText = "Click me!";
+
+RadJav.initialize (RadJav.getStandardLibrary (),
+					RadJav.getGUILibrary (),
+					RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (function () {
+		var screenWidth = RadJav.getPrimaryScreen().getWidth();
+		var screenHeight = RadJav.getPrimaryScreen().getHeight();
+		
+		window = new RadJav.MUI.View ("win", "Window Example");
+		window.createMainView().then( function(win) {
+			window = win;
+			window.setPosition(0, 0);
+			window.setSize(screenWidth, screenHeight);
+			
+			var button = new RadJav.GUI.Button ("button", initialText, window);
+			button.create().then( function(btn) {
+				button = btn;
+				button.setPosition(50, screenHeight/2);
+				button.setSize(screenWidth/2, 100);
+				
+				button.on ("click", function () {
+					RadJav.Console.log("Button clicked");
+					button.setText("Well done!");
+					
+					setTimeout(function () {
+						button.setText(initialText);
+					}, 1000);
+				});
+			});
+		});
+	});
+});

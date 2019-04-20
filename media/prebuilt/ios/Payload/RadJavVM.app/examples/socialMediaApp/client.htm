@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Social Media App</title>
+
+	<link href = "../../html5/dependencies/dojo/dijit/themes/claro/claro.css" rel = "stylesheet" type = "text/css" />
+	<link href = "../../html5/dependencies/dojo/dojox/grid/resources/Grid.css" rel = "stylesheet" type = "text/css" />
+	<link href = "../../html5/dependencies/dojo/dojox/grid/resources/claroGrid.css" rel = "stylesheet" type = "text/css" />
+	<link href = "../../html5/dependencies/dojo/dojox/calendar/themes/claro/Calendar.css" rel = "stylesheet" type = "text/css" />
+	<link href = "../../html5/dependencies/dojo/dojox/calendar/themes/claro/MonthColumnView.css" rel = "stylesheet" type = "text/css" />
+	<link href = "../../html5/dependencies/dojo/dojox/layout/resources/FloatingPane.css" rel = "stylesheet" type = "text/css" />
+	<link href = "../../html5/dependencies/dojo/dojox/layout/resources/ResizeHandle.css" rel = "stylesheet" type = "text/css" />
+
+	<script type = "text/javascript">
+		var dojoConfig = {
+				async: true, 
+				deps: ["dojo/ready", "dojo/parser", "dojo/dnd/move", "dojox/layout/FloatingPane", 
+						"dijit/form/Button", "dijit/form/TextBox", "dijit/form/CheckBox", 
+						"dojox/grid/DataGrid", "dojo/data/ItemFileWriteStore", 
+						"dojo/store/Memory", "dojo/store/Observable", "dijit/form/ComboBox", 
+						"dijit/MenuBar", "dijit/PopupMenuBarItem", "dijit/Menu", "dijit/MenuItem",
+						"dijit/DropDownMenu", "dojo/query"]
+			};
+	</script>
+	<script type = "text/javascript" src = "../../html5/dependencies/dojo/dojo/dojo.js"></script>
+	<script type = "text/javascript" src = "../../html5/dependencies/three.js/three.min.js"></script>
+	<script type = "text/javascript" src = "../../html5/build/RadJav.js"></script>
+
+	<script type = "text/javascript">
+		RadJav.baseUrl = "../../html5/build";
+		RadJav.themeUrl = "../../html5/build/themes/default";
+		RadJav.useAjax = true;
+		
+		function setup ()
+		{
+			dojo.ready (function ()
+				{
+					var devTools = RadJav.OS.HTML5.getUrlParam ("devtools");
+
+					if (devTools == 1)
+						RadJav.connectDevTools ();
+
+					RadJav.runApplicationFromFile ("./client.xrj").then (function ()
+						{
+							document.getElementById ("loading").style.visibility = "hidden";
+						});
+				});
+		}
+	</script>
+</head>
+
+<body onload = "setup ();" class = "claro">
+	<div id = "loading" style = "position: absolute; visibility: visible;">Loading...</div>
+</body>
+
+</html>
+

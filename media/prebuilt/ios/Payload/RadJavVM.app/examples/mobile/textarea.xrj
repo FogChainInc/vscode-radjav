@@ -1,0 +1,19 @@
+var window;
+var textarea;
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (function () {
+		var screenWidth = RadJav.getPrimaryScreen().getWidth();
+		var screenHeight = RadJav.getPrimaryScreen().getHeight();
+		
+		window = new RadJav.MUI.View("win", "Window Example");
+		window.createMainView();
+		window.setPosition(0, 0);
+		window.setSize(screenWidth, screenHeight);
+		
+		textarea = new RadJav.GUI.Textarea("textarea", "", window);
+		textarea.create();
+		textarea.setPosition(50, 100);
+		textarea.setSize(200, 100);
+	});
+});

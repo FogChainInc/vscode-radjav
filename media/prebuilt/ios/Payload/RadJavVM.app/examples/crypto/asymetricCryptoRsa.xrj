@@ -1,0 +1,55 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+try
+{
+
+    var keyGenerator = new RadJav.Crypto.KeyGenerator({cryptoLibrary: "OpenSSL",
+						      algorithm: "RSA",
+						      bits: "2048",
+						      encryptPadding: "RSA_PKCS1_PADDING",
+						      signatureType: "OPENSSL_DEFAULT",
+						      inputEncoding: "binary",
+						      outputEncoding: "binary"
+						     });
+
+    RadJav.Console.println("------------------> generate");
+
+    var text = "1234567890";
+    var bobsPrivateKey = keyGenerator.generate();
+    var bobsSignature = bobsPrivateKey.signSync(text);
+
+    var bobsPublicKey = bobsPrivateKey.getPublicKey();
+    if (bobsPublicKey.verifySync(text, bobsSignature))
+    {
+	alert("That is Bob's signature");
+    }
+    else
+    { 
+	alert("That is not Bob's signature");
+    }	
+	
+    var someOtherPrivateKey = keyGenerator.generate();
+    var someOtherSignature = someOtherPrivateKey.signSync(text);
+
+    var bobsPublicKey = bobsPrivateKey.getPublicKey();
+    if (bobsPublicKey.verifySync(text, someOtherSignature))
+    {
+	alert("That is Bob's signature");
+    }
+    else
+    { 
+	alert("That is not Bob's signature");
+    }	
+
+
+
+}
+catch (error)
+{
+    RadJav.Console.println(error);
+}

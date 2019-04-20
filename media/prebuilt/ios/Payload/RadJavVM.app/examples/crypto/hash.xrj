@@ -1,0 +1,52 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+{
+    var digest = new RadJav.Crypto.Hash({cryptoLibrary: "OpenSSL",
+					  hashAlgorithm: "sha256",
+					  outputEncoding: "base64"});
+
+    var text = 'asdfadfadsf';
+    var digestResult = digest.digestSync(text);
+    RadJav.Console.println("Digest Algorithm: " + digest.hashAlgorithm);
+    RadJav.Console.println("Input text: " + text);
+    RadJav.Console.println("Digest Result: " + digestResult);
+}
+
+{
+    var digest = new RadJav.Crypto.Hash({cryptoLibrary: "OpenSSL",
+					  hashAlgorithm: "sha256",
+					  outputEncoding: "base64"});
+
+    var text = 'asdfadfadsf';
+    var buffer = new ArrayBuffer(text.length);
+    var binData = new Uint8Array(buffer);
+    for (var i=0; i < text.length; i++)
+	binData[i] = text.charCodeAt(i);
+
+    var digestResult = digest.digestSync(binData);
+    RadJav.Console.println("Digest Algorithm: " + digest.hashAlgorithm);
+    RadJav.Console.println("Input text: " + text);
+    RadJav.Console.println("Digest Result: " + digestResult);
+}
+
+{
+    var digest = new RadJav.Crypto.Hash({cryptoLibrary: "OpenSSL",
+					  hashAlgorithm: "sha256",
+					  outputEncoding: "base64"});
+
+
+    digest.digest('asdfadfadsf').then (
+	function (data)
+	{
+	    alert("Done!\nHash Alg: " + digest.hashAlgorithm + "\nHash: " +
+		  data);
+	});
+
+}
+
+

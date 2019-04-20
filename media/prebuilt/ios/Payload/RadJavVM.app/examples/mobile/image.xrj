@@ -1,0 +1,27 @@
+var window;
+var image;
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (function () {
+		var screenWidth = RadJav.getPrimaryScreen().getWidth();
+		var screenHeight = RadJav.getPrimaryScreen().getHeight();
+		
+		window = new RadJav.MUI.View("win", "Window Example");
+		window.createMainView();
+		window.setPosition(0, 0);
+		window.setSize(screenWidth, screenHeight);
+		
+		image = new RadJav.GUI.Image("image", "", window);
+		image.create();
+		image.setPosition(50, 100);
+		image.setSize(200, 100);
+		image.setScaleMode(RadJav.GUI.Image.ScaleModeAspectFit);
+		
+		if (RadJav.OS.type == "android")
+			image.setImage("/storage/emulated/0/Android/data/com.fogchain.radjavvm/cache/examples/mobile/test_image_android.png");
+		else //iOS
+			image.setImage("");
+		
+		RadJav.Console.log("Image scale mode:" + image.getScaleMode());
+	});
+});

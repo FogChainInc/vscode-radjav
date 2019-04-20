@@ -1,0 +1,11 @@
+var window;
+
+// Initialize RadJav and load all necessary libraries.
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function () {
+	// Execute the application, in this case, a simple function. Can also be a file.
+	RadJav.runApplication (function () {
+		RadJav.Console.log("Hello World!");
+		alert("Hello world!");
+		RadJav.exit();
+	});
+});

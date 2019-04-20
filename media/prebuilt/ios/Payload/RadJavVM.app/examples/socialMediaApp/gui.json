@@ -1,0 +1,24 @@
+[
+	{
+		"type": "RadJav.MUI.Navigator", 
+		"name": "navigator", 
+		"visibility": true, 
+		"useParentForRootView": true, 
+		"pushView": "view", 
+		"children": [
+				{
+					"type": "RadJav.MUI.View", 
+					"name": "view", 
+					"visibility": true, 
+					"children": [
+							{
+								"type": "RadJav.MUI.Image", 
+								"name": "img", 
+								"image": "../image/radjav-med.png", 
+								"visibility": true
+							}
+						]
+				}
+			]
+	}
+]

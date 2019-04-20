@@ -1,0 +1,34 @@
+var win = new RadJav.GUI.Window ("win", "Window Example");
+
+// Stupid hack for now. Delete in the future. Should throw errors in HTML5.
+win.create ().then (function (win2)
+	{
+	});
+
+
+RadJav.Console.println("Args: " + RadJav.OS.args[0]);
+
+port = 9229;
+if (RadJav.OS.args.length > 0 && RadJav.OS.args[0] != undefined)
+    port = RadJav.OS.args[0];
+
+var webSocketServer = new RadJav.Net.WebSocketServerSsl({certificateStore: "cert/user.crt",
+							 keyStore: "cert/user.key"});
+
+webSocketServer.onAccept (function (id)
+			  {
+	});
+
+webSocketServer.onReceive (function (id, msg)
+	{
+
+	    RadJav.Console.println("### Received at:" + id + ", msg: " + msg);
+
+	    webSocketServer.send(id, msg);
+	});
+
+webSocketServer.listen(port);
+alert("Server listening");
+
+
+

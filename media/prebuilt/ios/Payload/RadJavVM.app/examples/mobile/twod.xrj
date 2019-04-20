@@ -1,0 +1,43 @@
+var rootwin;
+
+var scrollview;
+var content;
+var contentbutton1;
+var contentbutton2;
+var image;
+
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function () {
+	RadJav.runApplication (function () {
+		var screenWidth = RadJav.getPrimaryScreen().getWidth();
+		var screenHeight = RadJav.getPrimaryScreen().getHeight();
+		
+		//Create root view
+		rootwin = new RadJav.MUI.View("win", "2DScrollView Example");
+		rootwin.createMainView();
+		rootwin.setPosition(0, 0);
+		rootwin.setSize(screenWidth, screenHeight);
+		
+		//Create 2D scrollview
+		scrollview = new RadJav.MUI.ScrollView("sw", "", rootwin);
+		scrollview.create();
+		scrollview.setPosition(0, 0);
+		scrollview.setSize(screenWidth, screenHeight);
+		RadJav.Console.log("scrollview.create");
+		
+		//Create scrollview content image
+		image = new RadJav.GUI.Image("image", "");
+		image.create();
+		image.setPosition(0, 0);
+		image.setSize(900, 900);
+		image.setScaleMode(RadJav.GUI.Image.ScaleModeAspectFit);
+		
+		if (RadJav.OS.type == "android")
+			image.setImage("/storage/emulated/0/Android/data/com.fogchain.radjavvm/cache/examples/mobile/test_image_android.png");
+		else //iOS
+			image.setImage("/examples/mobile/test_image_android.png");
+		
+		RadJav.Console.log("Image scale mode:" + image.getScaleMode());
+		
+		scrollview.addChild(image);
+	});
+});

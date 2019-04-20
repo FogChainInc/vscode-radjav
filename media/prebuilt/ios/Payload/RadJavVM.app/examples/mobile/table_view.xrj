@@ -1,0 +1,123 @@
+var window1;
+var globalTable;
+var globalModel;
+var globalButton;
+
+
+// Initialize RadJav and load all necessary libraries.
+RadJav.initialize (RadJav.getStandardLibrary (), RadJav.getGUILibrary (), RadJav.getMUILibrary ()).then (function ()
+   {
+       // Execute the application, in this case, a simple function. Can also be a file.
+       RadJav.runApplication (function ()
+           {
+
+               
+
+                   var win3 = new RadJav.MUI.ViewController ("win", "Window Example");
+                   win3.create ().then (function (win4)
+                   {
+                       window1 = win4;
+                       
+                       
+                       var table = new RadJav.MUI.TableView ("table","table example");
+                       table.create ().then (function (tableParam){
+                       
+                       		globalTable = tableParam;
+                       		
+                       		window1.addChild(tableParam);
+                       		var screenWidth = RadJav.getPrimaryScreen ().getWidth ();
+    	                	var screenHeight = RadJav.getPrimaryScreen ().getHeight ();
+                       		tableParam.setSize(screenWidth,screenHeight);
+                       		
+                       		var model = new RadJav.MUI.TableViewModel();
+                       		globalModel = model;
+                       		                     		
+                       		
+                       		model.create ().then (function (modelParam){
+                       			
+                       		var array = [];
+								
+							function cell_click(cell) {
+								return function () {
+									alert ("Selected " + cell.name);
+								}
+							}
+							
+							function cell_accessory_click(cell) {
+								return function () {
+									alert ("Accessory tapped " + cell.name);
+								}
+							}
+							
+							function cell_delete(cell) {
+								return function () {
+									var index = array.indexOf(cellParam);
+                                    array.splice(index,1);
+                                    globalModel.setCellModels(array);
+                       				globalTable.setModel(globalModel);
+								}
+							}
+							
+							
+                       		var headerModel = new RadJav.MUI.TableCellModel("header","");
+                       		headerModel.setIsHeader(true);
+                       		array.push(headerModel);
+
+                       		
+                       		var i;
+							for (i = 0; i < 5; i++) { 
+							
+								var text = "number " + i;
+    							var cellParam = new RadJav.MUI.TableCellModel(text,"");
+
+                       			cellParam.setIsDeletable(true);
+                       			cellParam.on ("click", cell_click(cellParam));
+                       			cellParam.on ("accessory_click",cell_accessory_click(cellParam));
+                                cellParam.on ("delete",cell_delete(cellParam));
+
+
+                       			array.push(cellParam);
+
+							}
+							
+							var footerModel = new RadJav.MUI.TableCellModel("footer","");
+                       		footerModel.setIsFooter(true);
+                       		array.push(footerModel);
+							
+							
+							var headerModel1 = new RadJav.MUI.TableCellModel("header1","");
+                       		headerModel1.setIsHeader(true);
+                       		array.push(headerModel1);
+
+                       		
+							for (i = 0; i < 5; i++) { 
+							
+								var text = "number " + i;
+    							var cellParam = new RadJav.MUI.TableCellModel(text,"");
+
+                       			cellParam.setIsDeletable(true);
+                       			cellParam.on ("click", cell_click(cellParam));
+                       			cellParam.on ("accessory_click",cell_accessory_click(cellParam));
+                                cellParam.on ("delete",cell_delete(cellParam));
+
+
+                       			array.push(cellParam);
+
+							}
+							
+							
+							
+                       		globalModel.setCellModels(array);
+                       		globalTable.setModel(globalModel);
+                       			
+                       			
+                       			
+                       		});
+                       		
+                       		
+                       		
+                       });
+                         
+                   });
+           });
+   });

@@ -1,16 +1,24 @@
 import * as vscode from 'vscode';
 import * as path from "path";
 import * as fs from "fs";
+import express = require ("express");
+import * as http from "http";
 
 export class PreviewManager implements vscode.WebviewPanelSerializer
 {
     private panel: vscode.WebviewPanel;
     private readonly _disposables: vscode.Disposable[] = [];
     private extensionPath: string;
+    private filePath: string;
     private activeEditor: vscode.TextDocument;
     public static previewManagers: PreviewManager[] = [];
+    private app: express.Application;
+    private webServer: http.Server;
+    private webServerAddr: string;
+    private webServerPort: number;
 
-    public constructor(activeEditor: vscode.TextDocument, panel: vscode.WebviewPanel, extensionPath: string)
+    public constructor(activeEditor: vscode.TextDocument,
+        panel: vscode.WebviewPanel, extensionPath: string, filePath: string)
     {
         if (activeEditor == null)
         {
@@ -22,6 +30,7 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
         this.activeEditor = activeEditor;
         this.panel = panel;
         this.extensionPath = extensionPath;
+        this.filePath = filePath;
         this._disposables.push(vscode.window.registerWebviewPanelSerializer("RadJav.Preview", this));
 
         this.panel.onDidDispose (() => this.dispose (), null, this._disposables);
@@ -45,6 +54,9 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
                 }
             }, this, this._disposables);
 
+        this.webServerAddr = "127.0.0.1";
+        this.webServerPort = 8594;
+        this.startWebServer (path.dirname (filePath));
         this.update ();
         this.watchCode ();
     }
@@ -53,7 +65,7 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
     {
         let viewColumn = vscode.window.activeTextEditor.viewColumn;
 
-        if (sideBySide == true)
+        if (sideBySide === true)
             viewColumn += 1;
 
         let panel: vscode.WebviewPanel = vscode.window.createWebviewPanel (
@@ -66,7 +78,8 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
             });
 
         let previewManager: PreviewManager =
-            new PreviewManager (vscode.window.activeTextEditor.document, panel, extensionPath);
+            new PreviewManager (vscode.window.activeTextEditor.document,
+                panel, extensionPath, vscode.window.activeTextEditor.document.fileName);
         PreviewManager.previewManagers.push (previewManager);
 
         return (previewManager);
@@ -80,13 +93,15 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
 
     public static revive (panel: vscode.WebviewPanel, extensionPath: string)
     {
+        let filePath: string = vscode.window.activeTextEditor.document.fileName;
         let previewManager: PreviewManager =
-            new PreviewManager (vscode.window.activeTextEditor.document, panel, extensionPath);
+            new PreviewManager (vscode.window.activeTextEditor.document, panel, extensionPath, filePath);
         PreviewManager.previewManagers.push (previewManager);
     }
 
     public dispose ()
     {
+        this.stopWebServer ();
         this.disposeAll(this._disposables);
 
         this.panel.dispose ();
@@ -141,11 +156,11 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
     update ()
     {
         let content: string = null;
-        let extPath: string = path.join (this.extensionPath, "media");
+        let extMediaPath: string = path.join (this.extensionPath, "media");
 
         try
         {
-            content = fs.readFileSync (path.join (extPath, "index.htm")).toString ();
+            content = fs.readFileSync (path.join (extMediaPath, "index.htm")).toString ();
         }
         catch (ex)
         {
@@ -153,14 +168,45 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
 
         if (content != null)
         {
-            let uri = vscode.Uri.file (extPath);
-            let baseUri = uri.with ({ scheme: "vscode-resource" });
-            content = content.replace (/\%baseUrl\%/g, baseUri.toString () + "/");
+            let extPathUri = vscode.Uri.file (path.dirname (this.filePath));
+            let extPathUriScheme = extPathUri.with ({ scheme: "vscode-resource" });
+            let extMediaPathUri = vscode.Uri.file (extMediaPath);
+            let extMediaPathScheme = extMediaPathUri.with ({ scheme: "vscode-resource" });
+
+            content = content.replace (/\%baseUrl\%/g, extPathUriScheme.toString () + "/");
+            content = content.replace (/\%extMediaPath\%/g, extMediaPathScheme.toString ());
+            content = content.replace (/\%radJavAppUrl\%/g, `http://${this.webServerAddr}:${this.webServerPort}`);
 
             this.panel.webview.html = content.toString ();
         }
         else
             this.panel.webview.html = "Unable to load RadJav.";
+    }
+
+    startWebServer (location: string)
+    {
+        this.app = express ();
+        this.app.use (express.static (location + "/"));
+        this.app.use (express.static (path.join (this.extensionPath, "media") + "/"));
+
+        this.app.get ("/", (function (req, res)
+            {
+                let filePath: string = this.extensionPath + "/media/RadJavAppPreview/RadJavApp.htm";
+
+                if (req.path != "/")
+                    filePath = req.path;
+
+                res.sendFile (path.normalize (filePath));
+            }).bind (this));
+        this.webServer = this.app.listen (this.webServerPort, this.webServerAddr, null, (function ()
+            {
+                console.log (`RadJav web server listening on ${this.webServerAddr}:${this.webServerPort}`);
+            }).bind (this));
+    }
+
+    stopWebServer ()
+    {
+        this.webServer.close ();
     }
 
     public async deserializeWebviewPanel(webview: vscode.WebviewPanel, state: any): Promise<void>
