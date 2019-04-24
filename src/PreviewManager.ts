@@ -39,14 +39,14 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
                 if (this.panel.visible == true)
                     this.update ();
             }, null, this._disposables);
-        this.panel.webview.onDidReceiveMessage (function (message)
+        this.panel.webview.onDidReceiveMessage ((message) =>
             {
                 if (message.alert != null)
                     vscode.window.showInformationMessage (message.alert);
 
                 if (message.ready != null)
                 {
-                    if (message.ready == true)
+                    if (message.ready === true)
                     {
                         let content: string = this.activeEditor.getText ();
                         this.sendContent (content);
@@ -122,19 +122,20 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
     {
         let watcher: vscode.FileSystemWatcher = vscode.workspace.createFileSystemWatcher ("**/*.*");
 
-        watcher.onDidChange (function (event: vscode.Uri)
+        watcher.onDidChange ((event: vscode.Uri) =>
             {
                 this.refreshView ();
             }, this, this._disposables);
-        watcher.onDidCreate (function ()
+        watcher.onDidCreate (() =>
             {
                 this.refreshView ();
             }, this, this._disposables);
-        watcher.onDidDelete (function ()
+        watcher.onDidDelete (() =>
             {
                 this.refreshView ();
             }, this, this._disposables);
-        this._disposables.push (vscode.workspace.onDidChangeTextDocument (function (event: vscode.TextDocumentChangeEvent)
+        this._disposables.push (vscode.workspace.onDidChangeTextDocument (
+            (event: vscode.TextDocumentChangeEvent) =>
             {
                 this.refreshView ();
             }, this, this._disposables));
@@ -189,7 +190,7 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
         this.app.use (express.static (location + "/"));
         this.app.use (express.static (path.join (this.extensionPath, "media") + "/"));
 
-        this.app.get ("/", (function (req, res)
+        this.app.get ("/", ((req, res) =>
             {
                 let filePath: string = this.extensionPath + "/media/RadJavAppPreview/RadJavApp.htm";
 
@@ -198,7 +199,7 @@ export class PreviewManager implements vscode.WebviewPanelSerializer
 
                 res.sendFile (path.normalize (filePath));
             }).bind (this));
-        this.webServer = this.app.listen (this.webServerPort, this.webServerAddr, null, (function ()
+        this.webServer = this.app.listen (this.webServerPort, this.webServerAddr, null, (() =>
             {
                 console.log (`RadJav web server listening on ${this.webServerAddr}:${this.webServerPort}`);
             }).bind (this));

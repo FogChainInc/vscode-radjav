@@ -34,6 +34,15 @@ export function activate(context: vscode.ExtensionContext)
                 context.subscriptions.push (PreviewManager.create (true, context.extensionPath));
         }));
 
+    context.subscriptions.push (vscode.commands.registerCommand ("extension.radjav-debug2.buildIOS",
+        function ()
+        {
+            let root: vscode.WorkspaceFolder = vscode.workspace.workspaceFolders[0];
+            let folderPath: string = root.uri.fsPath;
+            let binPath: string = path.join (context.extensionPath, "media", "prebuilt", "ios");
+
+            RadJavTools.buildIPA (binPath, folderPath);
+        }));
     context.subscriptions.push (vscode.commands.registerCommand ("extension.radjav-debug2.deployToIOS",
         function ()
         {
@@ -44,6 +53,16 @@ export function activate(context: vscode.ExtensionContext)
 
             RadJavTools.buildIPA (binPath, folderPath);
             RadJavTools.installIPA (`${folderPath}/app.ipa`, imobiledevice);
+        }));
+    context.subscriptions.push (vscode.commands.registerCommand ("extension.radjav-debug2.buildAndroid",
+        function ()
+        {
+            let root: vscode.WorkspaceFolder = vscode.workspace.workspaceFolders[0];
+            let folderPath: string = root.uri.fsPath;
+            let binPath: string = path.join (context.extensionPath, "media", "prebuilt", "android");
+            let androidsdk: string = vscode.workspace.getConfiguration ("radjav").get<string> ("androidsdk");
+
+            RadJavTools.buildAPK (binPath, folderPath, "app.xrj", androidsdk);
         }));
     context.subscriptions.push (vscode.commands.registerCommand ("extension.radjav-debug2.deployToAndroid",
         function ()

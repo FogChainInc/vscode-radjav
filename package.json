@@ -1,15 +1,16 @@
 {
   "name": "radjav-debug2",
-  "displayName": "RadJav Debug",
-  "version": "1.29.5",
-  "publisher": "ms-vscode",
+  "displayName": "RadJav Extension",
+  "version": "1.30.0",
+  "publisher": "fogchain",
   "description": "%extension.description%",
   "icon": "images/node-debug-icon.png",
   "categories": [
+    "Programming Languages",
     "Debuggers"
   ],
   "author": {
-    "name": "Microsoft Corporation"
+    "name": "FogChain, Corp."
   },
   "license": "MIT",
   "private": true,
@@ -55,7 +56,9 @@
     "onWebviewPanel:extension.radjav-debug2.preview",
     "onCommand:extension.radjav-debug2.showPreview",
     "onCommand:extension.radjav-debug2.showPreviewToSide",
+    "onCommand:extension.radjav-debug2.buildIOS",
     "onCommand:extension.radjav-debug2.deployToIOS",
+    "onCommand:extension.radjav-debug2.buildAndroid",
     "onCommand:extension.radjav-debug2.deployToAndroid"
   ],
   "scripts": {
@@ -71,15 +74,16 @@
     "package": "gulp package"
   },
   "engines": {
-    "vscode": "^1.19.0",
-    "node": ">=6.3.0"
+    "vscode": "^1.30.0",
+    "node": ">=6.3.0",
+    "radjav": ">=0.30.0"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Microsoft/vscode-node-debug2.git"
+    "url": "https://github.com/FogChainInc/vscode-radjav.git"
   },
   "bugs": {
-    "url": "https://github.com/Microsoft/vscode-node-debug2/issues"
+    "url": "https://github.com/FogChainInc/vscode-radjav/issues"
   },
   "contributes": {
     "configuration": {
@@ -454,12 +458,24 @@
         "title": "%convertToGUIJSON%"
       },
       {
+        "command": "extension.radjav-debug2.buildIOS",
+        "title": "%buildIOS%"
+      },
+      {
         "command": "extension.radjav-debug2.deployToIOS",
         "title": "%deployToIOS%"
       },
       {
+        "command": "extension.radjav-debug2.buildAndroid",
+        "title": "%buildAndroid%"
+      },
+      {
         "command": "extension.radjav-debug2.deployToAndroid",
         "title": "%deployToAndroid%"
+      },
+      {
+        "command": "extension.radjav-debug2.createNewRadJavProject",
+        "title": "%createNewRadJavProject%"
       },
       {
         "command": "extension.radjav-debug2.showPreview",
@@ -488,6 +504,5 @@
         "when": "debugType == 'radjav'"
       }
     ]
-  },
-  "types": "d.ts/RaddJav.d.ts"
+  }
 }

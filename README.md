@@ -8,14 +8,35 @@ See a general overview of debugging in VS Code [here](https://code.visualstudio.
 * Add a new RadJav launch configuration.
 * Debug it!
 
-## Build and install iOS app
-Create your RadJav app, then build an IPA to install to an iOS device.
+## Create a new project
+Create a new RadJav project open Visual Studio Code, then open a new terminal.
 
-Press Ctrl-Shift-P, type:
+Navigate to the directory where you wish to save the new project and enter:
+
+    npm install -g radjav-tools
+    radjav-tools --createProject
+
+A new RadJav Hello World app will be created in the directory you've selected.
+
+In Visual Studio Code, click File then open folder and select the folder containing the project you just created.
+
+## Build iOS app
+Once you've created your RadJav app, you can build an IPA that can be installed to an iOS device.
+
+To build the IPA, press Ctrl-Shift-P and type:
+
+    Package entire workspace as an iOS IPA
+
+The IPA generated will be a debug IPA meant for testing use only. It will not be able to be uploaded to the app store.
+
+## Build and install iOS app
+Once you've created your RadJav app, you can build an IPA then install it to an iOS device.
+
+To build and install the IPA, press Ctrl-Shift-P and type:
 
     Deploy entire workspace to iOS
 
-imobiledevice must be installed in order to install an IPA on either Windows, Mac, or Linux.
+NOTE: imobiledevice must be installed in order to install an IPA on either Windows, Mac, or Linux.
 
 ### Installing imobiledevice on Windows
 http://docs.quamotion.mobi/imobiledevice/download/
@@ -29,6 +50,15 @@ http://docs.quamotion.mobi/imobiledevice/download/
     brew install ideviceinstaller
 
 If imobiledevice isn't in your PATH environment variable, you can specify the path in your VSCode settings at radjav.imobiledevice
+
+## Build Android app
+Once you've created your RadJav app, you can build an APK that can be installed to an Android device.
+
+To build the APK, press Ctrl-Shift-P and type:
+
+    Package entire workspace as an Android APK
+
+The APK generated will be a debug APK meant for testing use only. It will not be able to be uploaded to the app store.
 
 ### Build and install Android app
 Create your RadJav app, then build an APK to install to an Android device.
